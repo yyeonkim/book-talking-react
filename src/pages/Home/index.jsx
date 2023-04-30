@@ -1,5 +1,9 @@
 import React from "react";
 
 export default function Home() {
-  return <div className="App">글씨체 확인</div>;
+  return (
+    <div>
+      <button>토킹이 소개</button>
+    </div>
+  );
 }
