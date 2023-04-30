@@ -6,8 +6,8 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
-import "./style/reset.css";
-import "./style/index.css";
+import "./styles/reset.css";
+import "./styles/index.css";
 
 const router = createBrowserRouter([
   {
