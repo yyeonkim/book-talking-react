@@ -1,3 +1,60 @@
-.home-logo {
-  width: 4.5rem;
+.section--content {
+  padding: 0 2.4rem;
+  font-size: 2.4rem;
+}
+
+.chat {
+  margin-bottom: 4.8rem;
+}
+
+.chat--talking {
+  display: flex;
+  position: relative;
+}
+
+.chat--user {
+  display: flex;
+  justify-content: right;
+}
+
+.profile--talking {
+  width: 4.8rem;
+}
+
+.text {
+  padding: 1.6rem;
+}
+
+.text--talking {
+  position: absolute;
+  top: 2.4rem;
+  left: 6.4rem;
+  border-radius: 0 1.6rem 1.6rem 1.6rem;
+  background-color: #ffe8b1;
+}
+
+.text--user {
+  border-radius: 1.6rem 0 1.6rem 1.6rem;
+  background-color: var(--grey);
+}
+
+.form--chat {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 2px solid var(--grey);
+}
+
+.input--chat {
+  width: 95%;
+  height: 5rem;
+  font-size: 2.4rem;
+  padding-left: 1.6rem;
+}
+
+.send-button {
+  margin: 0 1.6rem;
 }

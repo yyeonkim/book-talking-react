@@ -15,7 +15,7 @@ img {
   width: 40rem;
 }
 
-button {
+.main-button {
   font-size: 2.4rem;
   background-color: var(--yellow);
   padding: 2rem 5rem;
