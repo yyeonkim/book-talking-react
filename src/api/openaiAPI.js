@@ -17,5 +17,4 @@ export const getSystemResponse = async () => {
       },
     ],
   });
-  console.log(completion.data.choices[0].message);
 };
