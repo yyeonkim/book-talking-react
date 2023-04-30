@@ -1,6 +1,20 @@
+:root {
+  --background-color: #fefbf3;
+  --yellow: #ffca4e;
+  --grey: #bfcedd;
+}
+
 body,
 html {
   font-family: "OmyuPretty", sans-serif;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 1.6rem;
 }
 
 @font-face {
