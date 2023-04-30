@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSend } from "react-icons/io5";
 
 import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
 import "./style.css";
+import { startChat } from "../../api/chatAPI";
 
 export default function ChatPage() {
   // 사용자 답변
   const [userAnswer, setUserAnswer] = useState("");
   // 채팅 리스트
   const [contentList, setContentList] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const systemMessage = await startChat();
+      console.log(systemMessage);
+    })();
+  }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
