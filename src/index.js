@@ -1,19 +1,36 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 
+import "./styles/reset.css";
+import "./styles/index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
-import "./styles/reset.css";
-import "./styles/index.css";
+import ChatPage from "./pages/ChatPage";
+import Layout from "./components/Layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Layout />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/chat",
+        element: <ChatPage />,
+      },
+    ],
   },
 ]);
 
