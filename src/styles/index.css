@@ -4,6 +4,10 @@
   --grey: #bfcedd;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body,
 html {
   font-family: "OmyuPretty", sans-serif;
@@ -15,6 +19,14 @@ html {
 
 body {
   font-size: 1.6rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  font-family: "OmyuPretty", sans-serif;
 }
 
 @font-face {

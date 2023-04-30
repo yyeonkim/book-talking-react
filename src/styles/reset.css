@@ -132,3 +132,9 @@ button {
   line-height: inherit;
   padding: 0;
 }
+input {
+  border: none;
+}
+input:focus {
+  outline: none;
+}
