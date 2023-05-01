@@ -5,7 +5,7 @@ export const startChat = async () => {
   return res;
 };
 
-export const sendMessage = async (content) => {
-  const res = await axios.post("/api/chat/send", { body: { content } });
+export const sendMessage = async (chatList) => {
+  const res = await axios.post("/api/chat/send", chatList);
   return res;
 };
