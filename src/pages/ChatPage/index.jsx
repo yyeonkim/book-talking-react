@@ -5,17 +5,12 @@ import { useNavigate } from "react-router-dom";
 import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
 import { sendMessage, startChat } from "../../api/chatAPI";
-import { useChatList, useChatListDispatch } from "../../context/ChatContext";
 import "./style.css";
 
 export default function ChatPage() {
-  let count = 1; // 채팅 수
-
   // 사용자 답변
   const [userAnswer, setUserAnswer] = useState("");
-  // 채팅 리스트
-  const chatList = useChatList();
-  const chatListDispatch = useChatListDispatch();
+  const [chatList, setChatList] = useState([]);
   const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
   const scrollRef = useRef(null);
   const naviagte = useNavigate();
@@ -24,35 +19,16 @@ export default function ChatPage() {
     // 채팅 시작말 가져오기
     if (chatList.length === 0) {
       startChat().then((res) => {
-        chatListDispatch({ type: "init", data: res.data });
+        setChatList([res.data]);
         setDisable(false);
       });
     }
   }, []);
 
   useEffect(() => {
-    // 사용자가 채팅을 입력하면 토킹 답변 가져오기
-    if (chatList.length > 1 && disabled) {
-      sendMessage(chatList).then((res) => {
-        // 토킹 답변 state에 저장
-        chatListDispatch({ type: "add", data: res.data });
-        setDisable(false);
-        count++;
-      });
-    }
-  }, [chatList, disabled]);
-
-  useEffect(() => {
     // 채팅이 늘어나면 맨 아래로 스크롤 하기
     scrollToBottom();
   }, [chatList]);
-
-  useEffect(() => {
-    if (count >= 20) {
-      // 로딩 화면으로 이동
-      naviagte("/loading", { state: chatList });
-    }
-  }, [count]);
 
   const scrollToBottom = () => {
     scrollRef.current.scrollIntoView({
@@ -67,11 +43,20 @@ export default function ChatPage() {
 
     if (userAnswer !== "") {
       const newChat = { role: "user", content: userAnswer };
-      // 사용자 채팅 state에 저장
-      chatListDispatch({ type: "add", data: newChat });
+
+      setDisable(true);
       setUserAnswer(""); // 사용자 입력 초기화
-      setDisable(true); // 토킹이 답변할 때까지 입력 막기
-      count++;
+      setChatList((current) => [...current, newChat]);
+      sendMessage([...chatList, newChat]).then((res) => {
+        // 사용자와 토킹 답변 state에 저장
+        setChatList((current) => [...current, res.data]);
+        setDisable(false);
+      });
+
+      if (chatList.length >= 19) {
+        // 10번 질문 받으면 로딩 화면으로 이동
+        naviagte("/loading", { state: chatList });
+      }
     }
   };
 
