@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
 
 import talkingProfile from "../../assets/talking_profile.png";
@@ -12,13 +12,16 @@ export default function ChatPage() {
   // 채팅 리스트
   const [chatList, setChatList] = useState([]);
   const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     // 채팅 시작말 가져오기
-    startChat().then((res) => {
-      setChatList([res.data]);
-      setDisable(false);
-    });
+    if (chatList.length === 0) {
+      startChat().then((res) => {
+        setChatList([res.data]);
+        setDisable(false);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -31,6 +34,19 @@ export default function ChatPage() {
       });
     }
   }, [chatList, disabled]);
+
+  useEffect(() => {
+    // 채팅이 늘어나면 맨 아래로 스크롤 하기
+    scrollToBottom();
+  }, [chatList]);
+
+  const scrollToBottom = () => {
+    scrollRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -46,7 +62,7 @@ export default function ChatPage() {
 
   return (
     <>
-      <div className="section--content">
+      <div ref={scrollRef} className="section--content">
         {chatList.map((item, index) =>
           item.role === "user" ? (
             <div key={`user${index}`} className="chat chat--user">
