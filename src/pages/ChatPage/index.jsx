@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
+import { redirect } from "react-router-dom";
 
 import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
@@ -7,6 +8,7 @@ import { sendMessage, startChat } from "../../api/chatAPI";
 import "./style.css";
 
 export default function ChatPage() {
+  let count = 1;
   // 사용자 답변
   const [userAnswer, setUserAnswer] = useState("");
   // 채팅 리스트
@@ -31,6 +33,7 @@ export default function ChatPage() {
         // 토킹 답변 state에 저장
         setChatList((current) => [...current, res.data]);
         setDisable(false);
+        count++;
       });
     }
   }, [chatList, disabled]);
@@ -39,6 +42,13 @@ export default function ChatPage() {
     // 채팅이 늘어나면 맨 아래로 스크롤 하기
     scrollToBottom();
   }, [chatList]);
+
+  useEffect(() => {
+    if (count >= 20) {
+      // 로딩 화면으로 이동
+      redirect("/loading");
+    }
+  }, [count]);
 
   const scrollToBottom = () => {
     scrollRef.current.scrollIntoView({
@@ -57,6 +67,7 @@ export default function ChatPage() {
       setChatList((current) => [...current, newChat]);
       setUserAnswer(""); // 사용자 입력 초기화
       setDisable(true); // 토킹이 답변할 때까지 입력 막기
+      count++;
     }
   };
 

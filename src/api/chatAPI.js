@@ -1,11 +1,13 @@
 import axios from "axios";
 
 export const startChat = async () => {
-  const res = await axios.get("/api/chat/start");
-  return res;
+  return await axios.get("/api/chat/start");
 };
 
 export const sendMessage = async (chatList) => {
-  const res = await axios.post("/api/chat/send", chatList);
-  return res;
+  return await axios.post("/api/chat/send", chatList);
+};
+
+export const summarizeChat = async (chatList) => {
+  return await axios.post("/api/chat/summarize", chatList);
 };
