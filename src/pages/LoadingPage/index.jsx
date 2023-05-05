@@ -13,7 +13,7 @@ export default function LoadingPage() {
   useEffect(() => {
     summarizeChat(chatList).then((res) => {
       // 완성된 동화를 다음 화면에 전달
-      navigate("/create-story", { state: res.data });
+      navigate("/create-story", { state: res.data.content });
     });
   }, []);
 
