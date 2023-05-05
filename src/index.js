@@ -11,6 +11,7 @@ import ErrorPage from "./pages/ErrorPage";
 import ChatPage from "./pages/ChatPage";
 import Layout from "./components/Layout";
 import LoadingPage from "./pages/LoadingPage";
+import StoryPage from "./pages/StoryPage";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/loading",
         element: <LoadingPage />,
+      },
+      {
+        path: "/create-story",
+        element: <StoryPage />,
       },
     ],
   },

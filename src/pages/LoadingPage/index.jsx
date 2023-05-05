@@ -1,15 +1,19 @@
 import { useEffect } from "react";
-import { redirect } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Loader from "../../components/Loader";
 import "./style.css";
 import { summarizeChat } from "../../api/chatAPI";
 
-export default function LoadingPage({ chatList }) {
+export default function LoadingPage() {
+  const { state: chatList } = useLocation();
+  const navigate = useNavigate();
+
   // 채팅 요약하기
   useEffect(() => {
     summarizeChat(chatList).then((res) => {
-      redirect("/create-story");
+      // 완성된 동화를 다음 화면에 전달
+      navigate("/create-story", { state: res.data });
     });
   }, []);
 

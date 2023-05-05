@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
 import { sendMessage, startChat } from "../../api/chatAPI";
-import "./style.css";
 import { useChatList, useChatListDispatch } from "../../context/ChatContext";
+import "./style.css";
 
 export default function ChatPage() {
   let count = 1; // 채팅 수
@@ -18,6 +18,7 @@ export default function ChatPage() {
   const chatListDispatch = useChatListDispatch();
   const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
   const scrollRef = useRef(null);
+  const naviagte = useNavigate();
 
   useEffect(() => {
     // 채팅 시작말 가져오기
@@ -49,7 +50,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (count >= 20) {
       // 로딩 화면으로 이동
-      redirect("/loading");
+      naviagte("/loading", { state: chatList });
     }
   }, [count]);
 
