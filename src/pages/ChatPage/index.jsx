@@ -53,8 +53,8 @@ export default function ChatPage() {
         setDisable(false);
       });
 
-      if (chatList.length >= 19) {
-        // 10번 질문 받으면 로딩 화면으로 이동
+      if (chatList.length >= 15) {
+        // 8번 질문 받으면 로딩 화면으로 이동
         naviagte("/loading", { state: chatList });
       }
     }
