@@ -6,13 +6,16 @@ import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
 import { sendMessage, startChat } from "../../api/chatAPI";
 import "./style.css";
+import { useChatList, useChatListDispatch } from "../../context/ChatContext";
 
 export default function ChatPage() {
-  let count = 1;
+  let count = 1; // 채팅 수
+
   // 사용자 답변
   const [userAnswer, setUserAnswer] = useState("");
   // 채팅 리스트
-  const [chatList, setChatList] = useState([]);
+  const chatList = useChatList();
+  const chatListDispatch = useChatListDispatch();
   const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
   const scrollRef = useRef(null);
 
@@ -20,7 +23,7 @@ export default function ChatPage() {
     // 채팅 시작말 가져오기
     if (chatList.length === 0) {
       startChat().then((res) => {
-        setChatList([res.data]);
+        chatListDispatch({ type: "init", data: res.data });
         setDisable(false);
       });
     }
@@ -31,7 +34,7 @@ export default function ChatPage() {
     if (chatList.length > 1 && disabled) {
       sendMessage(chatList).then((res) => {
         // 토킹 답변 state에 저장
-        setChatList((current) => [...current, res.data]);
+        chatListDispatch({ type: "add", data: res.data });
         setDisable(false);
         count++;
       });
@@ -64,7 +67,7 @@ export default function ChatPage() {
     if (userAnswer !== "") {
       const newChat = { role: "user", content: userAnswer };
       // 사용자 채팅 state에 저장
-      setChatList((current) => [...current, newChat]);
+      chatListDispatch({ type: "add", data: newChat });
       setUserAnswer(""); // 사용자 입력 초기화
       setDisable(true); // 토킹이 답변할 때까지 입력 막기
       count++;

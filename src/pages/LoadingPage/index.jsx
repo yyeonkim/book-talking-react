@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import { redirect } from "react-router-dom";
+
 import Loader from "../../components/Loader";
 import "./style.css";
 import { summarizeChat } from "../../api/chatAPI";
-import { redirect } from "react-router-dom";
 
 export default function LoadingPage({ chatList }) {
   // 채팅 요약하기
@@ -11,6 +12,7 @@ export default function LoadingPage({ chatList }) {
       redirect("/create-story");
     });
   }, []);
+
   return (
     <>
       <div className="main center">

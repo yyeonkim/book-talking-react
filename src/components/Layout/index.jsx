@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./style.css";
 import Header from "./Header";
 import { colorTheme } from "../../theme";
+import ChatProvider from "../../context/ChatContext";
 
 export default function Layout() {
   const location = useLocation();
@@ -20,9 +21,11 @@ export default function Layout() {
   }, [location]);
 
   return (
-    <div id="background" style={{ backgroundColor: bgColor }}>
-      <Header />
-      <Outlet />
-    </div>
+    <ChatProvider>
+      <div id="background" style={{ backgroundColor: bgColor }}>
+        <Header />
+        <Outlet />
+      </div>
+    </ChatProvider>
   );
 }
