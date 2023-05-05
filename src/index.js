@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import ChatPage from "./pages/ChatPage";
 import Layout from "./components/Layout";
+import LoadingPage from "./pages/LoadingPage";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/chat",
         element: <ChatPage />,
+      },
+      {
+        path: "/loading",
+        element: <LoadingPage />,
       },
     ],
   },
