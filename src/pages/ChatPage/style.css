@@ -8,7 +8,7 @@
 .chat--talking {
   display: flex;
   position: relative;
-  margin-bottom: 4.8rem;
+  margin-bottom: 12rem;
 }
 
 .chat--user {
