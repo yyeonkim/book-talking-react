@@ -12,15 +12,15 @@
 
 @keyframes flash {
   0% {
-    background-color: #665f4f;
-    box-shadow: 32px 0 #665f4f, -32px 0 var(--yellow);
+    background-color: #d2cbb4;
+    box-shadow: 32px 0 #d2cbb4, -32px 0 var(--yellow);
   }
   50% {
     background-color: var(--yellow);
-    box-shadow: 32px 0 #665f4f, -32px 0 #665f4f;
+    box-shadow: 32px 0 #d2cbb4, -32px 0 #d2cbb4;
   }
   100% {
-    background-color: #665f4f;
-    box-shadow: 32px 0 var(--yellow), -32px 0 #665f4f;
+    background-color: #d2cbb4;
+    box-shadow: 32px 0 var(--yellow), -32px 0 #d2cbb4;
   }
 }
