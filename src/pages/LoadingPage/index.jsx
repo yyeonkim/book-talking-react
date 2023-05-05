@@ -1,7 +1,16 @@
+import { useEffect } from "react";
 import Loader from "../../components/Loader";
 import "./style.css";
+import { summarizeChat } from "../../api/chatAPI";
+import { redirect } from "react-router-dom";
 
-export default function LoadingPage() {
+export default function LoadingPage({ chatList }) {
+  // 채팅 요약하기
+  useEffect(() => {
+    summarizeChat(chatList).then((res) => {
+      redirect("/create-story");
+    });
+  }, []);
   return (
     <>
       <div className="main center">
@@ -11,7 +20,6 @@ export default function LoadingPage() {
           <br />
           이야기를 만들고 있으니 잠시만 기다려줘.
         </p>
-
         <Loader />
       </div>
     </>
