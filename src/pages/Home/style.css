@@ -11,7 +11,7 @@
   transform: translate(-50%, -50%);
 }
 
-img {
+.img--home {
   width: 40rem;
 }
 

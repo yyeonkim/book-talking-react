@@ -11,12 +11,12 @@
   transform: translate(-50%, -50%);
 }
 
-img {
+.img--loading {
   width: 21.5rem;
   margin-bottom: 1.6rem;
 }
 
-p {
+.p--loading {
   font-size: 2.4rem;
   text-align: center;
   line-height: 3.2rem;
