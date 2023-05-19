@@ -12,6 +12,7 @@ import ChatPage from "./pages/ChatPage";
 import Layout from "./components/Layout";
 import LoadingPage from "./pages/LoadingPage";
 import StoryPage from "./pages/StoryPage";
+import DrawingPage from "./pages/DrawingPage";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/create-story",
         element: <StoryPage />,
+      },
+      {
+        path: "/drawing",
+        element: <DrawingPage />,
       },
     ],
   },
