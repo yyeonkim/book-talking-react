@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import "./style.css";
@@ -6,17 +6,23 @@ import YellowButton from "../../components/YellowButton";
 
 export default function StoryPage() {
   const { state: story } = useLocation();
+  const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
   const [title, setTitle] = useState("");
 
   // 제목이 입력되면 버튼 활성화
   useEffect(() => {
-    if (title === "") {
+    if (title.length === 0) {
       setDisabled(true);
     } else {
       setDisabled(false);
     }
-  }, [title]);
+  }, [title.length]);
+
+  const onClick = () => {
+    // 완성된 동화를 다음 화면에 전달
+    navigate("/drawing", { state: { title, story } });
+  };
 
   return (
     <div className="StoryPage center">
@@ -35,7 +41,11 @@ export default function StoryPage() {
       </div>
       <p className="StoryPage__story">{story}</p>
       <Link to={"/"}>
-        <YellowButton disabled={disabled} text="이제 그림을 그려보자" />
+        <YellowButton
+          onClick={onClick}
+          disabled={disabled}
+          text="이제 그림을 그려보자"
+        />
       </Link>
     </div>
   );
