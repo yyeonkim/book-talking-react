@@ -1,31 +1,31 @@
-.section--content {
+.ChatPage {
   padding: 0 2.4rem;
   font-size: 2.4rem;
   overflow-y: auto;
   padding-bottom: 5rem;
 }
 
-.chat--talking {
+.ChatPage__chat--talking {
   display: flex;
   position: relative;
   margin-bottom: 12rem;
 }
 
-.chat--user {
+.ChatPage__chat--user {
   display: flex;
   justify-content: right;
   margin-bottom: 2.4rem;
 }
 
-.profile--talking {
+.chat__profile {
   width: 4.8rem;
 }
 
-.text {
+.chat__text {
   padding: 1.6rem;
 }
 
-.text--talking {
+.chat__text--talking {
   position: absolute;
   top: 2.4rem;
   left: 6.4rem;
@@ -33,12 +33,12 @@
   background-color: #ffe8b1;
 }
 
-.text--user {
+.chat__text--user {
   border-radius: 1.6rem 0 1.6rem 1.6rem;
   background-color: var(--grey);
 }
 
-.form--chat {
+.ChatPage__form {
   position: fixed;
   bottom: 0;
   display: flex;
@@ -49,13 +49,13 @@
   background-color: white;
 }
 
-.input--chat {
+.ChatPage__input {
   width: 95%;
   height: 5rem;
   font-size: 2.4rem;
   padding-left: 1.6rem;
 }
 
-.send-button {
+.ChatPage__sendButton {
   margin: 0 1.6rem;
 }

@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
+import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
 import { sendMessage, startChat } from "../../api/chatAPI";
-import "./style.css";
 
 export default function ChatPage() {
   // 사용자 답변
@@ -62,29 +62,35 @@ export default function ChatPage() {
 
   return (
     <>
-      <div ref={scrollRef} className="section--content">
+      <div ref={scrollRef} className="ChatPage">
         {chatList.map((item, index) =>
           item.role === "user" ? (
-            <div key={`user${index}`} className="chat chat--user">
-              <p className="text text--user">{item.content}</p>
+            <div
+              key={`user${index}`}
+              className="ChatPage__chat ChatPage__chat--user"
+            >
+              <p className="chat__text chat__text--user">{item.content}</p>
             </div>
           ) : (
-            <div key={`talking${index}`} className="chat chat--talking">
-              <img className="profile--talking" src={talkingProfile} alt="" />
-              <p className="text text--talking">{item.content}</p>
+            <div
+              key={`talking${index}`}
+              className="ChatPage-chat ChatPage__chat--talking"
+            >
+              <img className="chat__profile" src={talkingProfile} alt="" />
+              <p className="chat__text chat__text--talking">{item.content}</p>
             </div>
           )
         )}
       </div>
-      <form onSubmit={onSubmit} className="form--chat">
+      <form onSubmit={onSubmit} className="ChatPage__form">
         <input
           disabled={disabled}
           value={userAnswer}
           onChange={(event) => setUserAnswer(event.target.value)}
-          className="input--chat"
+          className="ChatPage__input"
           type="text"
         />
-        <button className="send-button">
+        <button className="ChatPage__sendButton">
           <IoSend size={24} color={colorTheme.grey} />
         </button>
       </form>

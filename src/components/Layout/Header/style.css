@@ -2,11 +2,11 @@ header {
   padding: 2.4rem;
 }
 
-.intro {
+.Header__intro {
   font-size: 2.4rem;
   cursor: pointer;
 }
 
-.home-logo {
+.Header__logo-logo {
   width: 4.5rem;
 }

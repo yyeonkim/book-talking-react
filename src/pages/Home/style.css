@@ -1,4 +1,4 @@
-.main {
+.Home {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,6 +11,6 @@
   transform: translate(-50%, -50%);
 }
 
-.img--home {
+.Home__image {
   width: 40rem;
 }

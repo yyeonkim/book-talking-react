@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import Loader from "../../components/Loader";
 import "./style.css";
+import Loader from "../../components/Loader";
 import { summarizeChat } from "../../api/chatAPI";
 
 export default function LoadingPage() {
@@ -18,20 +18,18 @@ export default function LoadingPage() {
   }, []);
 
   return (
-    <>
-      <div className="main center">
-        <img
-          className="img--loading"
-          src="logo_no_text.png"
-          alt="토킹이 로고"
-        />
-        <p className="p--loading">
-          즐거운 대화였어!
-          <br />
-          이야기를 만들고 있으니 잠시만 기다려줘.
-        </p>
-        <Loader />
-      </div>
-    </>
+    <div className="LoadingPage center">
+      <img
+        className="LoadingPage__image"
+        src="logo_no_text.png"
+        alt="토킹이 로고"
+      />
+      <p className="LoadingPage__title">
+        즐거운 대화였어!
+        <br />
+        이야기를 만들고 있으니 잠시만 기다려줘.
+      </p>
+      <Loader />
+    </div>
   );
 }

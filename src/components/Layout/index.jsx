@@ -22,7 +22,7 @@ export default function Layout() {
 
   return (
     <ChatProvider>
-      <div id="background" style={{ backgroundColor: bgColor }}>
+      <div id="Layout" style={{ backgroundColor: bgColor }}>
         <Header />
         <Outlet />
       </div>

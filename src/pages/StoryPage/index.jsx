@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import YellowButton from "../../components/YellowButton";
 import "./style.css";
+import YellowButton from "../../components/YellowButton";
 
 export default function StoryPage() {
   const { state: story } = useLocation();
@@ -19,8 +19,8 @@ export default function StoryPage() {
   }, [title]);
 
   return (
-    <div className="main center">
-      <div className="title">
+    <div className="StoryPage center">
+      <div className="StoryPage__title">
         <img className="title__img" src="logo_no_text.png" alt="토킹 로고" />
         <div className="title__text">
           <p className="title__p">이야기를 완성했어!</p>
@@ -33,7 +33,7 @@ export default function StoryPage() {
           />
         </div>
       </div>
-      <p className="story">{story}</p>
+      <p className="StoryPage__story">{story}</p>
       <Link to={"/"}>
         <YellowButton disabled={disabled} text="이제 그림을 그려보자" />
       </Link>

@@ -1,31 +1,37 @@
-.title {
+.StoryPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.StoryPage__title {
   display: flex;
   align-items: center;
   transform: translate(0, 2rem);
 }
 
-.title__img {
+.StoryPage__title .title__img {
   width: 13rem;
   margin-right: 2rem;
 }
 
-.title__text .title__p {
+.StoryPage__title .title__text .title__p {
   font-size: 2.4rem;
   margin-bottom: 2rem;
 }
 
-.title__text .title__input {
+.StoryPage__title .title__text .title__input {
   border-bottom: 1px solid black;
   width: 48rem;
   height: 4rem;
   font-size: 3.2rem;
 }
 
-.title__text .title__input::placeholder {
+.StoryPage__title .title__text .title__input::placeholder {
   font-size: 3.2rem;
 }
 
-.story {
+.StoryPage__story {
   max-width: 68rem;
   font-size: 2rem;
   background-color: var(--grey);
