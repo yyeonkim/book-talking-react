@@ -40,13 +40,11 @@ export default function StoryPage() {
         </div>
       </div>
       <p className="StoryPage__story">{story}</p>
-      <Link to={"/"}>
-        <YellowButton
-          onClick={onClick}
-          disabled={disabled}
-          text="이제 그림을 그려보자"
-        />
-      </Link>
+      <YellowButton
+        onClick={onClick}
+        disabled={disabled}
+        text="이제 그림을 그려보자"
+      />
     </div>
   );
 }
