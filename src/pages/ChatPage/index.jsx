@@ -17,12 +17,10 @@ export default function ChatPage() {
 
   useEffect(() => {
     // 채팅 시작말 가져오기
-    if (chatList.length === 0) {
-      startChat().then((res) => {
-        setChatList([res.data]);
-        setDisable(false);
-      });
-    }
+    startChat().then((res) => {
+      setChatList([res.data]);
+      setDisable(false);
+    });
   }, []);
 
   useEffect(() => {
