@@ -11,6 +11,19 @@ const Action = {
   Paint: "paint",
 };
 
+const ColorPalette = {
+  Black: "#000",
+  Red: "#e12828",
+  Orange: "#ffa843",
+  Yellow: "#ffe600",
+  Green: "#2bc91d",
+  Skyblue: "#2abdeb",
+  Blue: "#3d4bc9",
+  Pupple: "#a43fe1",
+  Pink: "#ef78a3",
+  Grey: "#818181",
+};
+
 function DrawingPage() {
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
@@ -26,9 +39,10 @@ function DrawingPage() {
     // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
     canvas.width = parentOfCanvasRef.current.offsetWidth;
     canvas.height = parentOfCanvasRef.current.offsetHeight;
-    // context 선 스타일 지정
+    // context 초기 스타일 지정
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#000";
+    ctx.strokeStyle = ColorPalette.Black;
+    ctx.fillStyle = ColorPalette.Black;
     // state 저장
     setCtx(ctx);
     setCanvas(canvas);
@@ -69,6 +83,12 @@ function DrawingPage() {
     setAction(action);
   };
 
+  const onClickPalette = (event) => {
+    const color = event.target.style.backgroundColor;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+  };
+
   const onClickComplete = (event) => {
     // 그림 완성 의사 묻기
   };
@@ -102,17 +122,47 @@ function DrawingPage() {
             <RiEraserFill className="tool__icon" data-action={Action.Eraser} />
             <RiPaintFill className="tool__icon" data-action={Action.Paint} />
           </div>
-          <div className="tool_colorPalette">
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
-            <div className="colorPalette__color"></div>
+          <div className="tool_colorPalette" onClick={onClickPalette}>
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Black }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Red }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Orange }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Yellow }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Green }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Skyblue }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Blue }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Pupple }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Pink }}
+            />
+            <div
+              className="colorPalette__color"
+              style={{ backgroundColor: ColorPalette.Grey }}
+            />
 
             <button
               className="DrawingPage__completeBtn"
