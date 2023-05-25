@@ -5,11 +5,15 @@ import talkingProfile from "../../assets/talking_profile.png";
 import Loader from "../../components/Loader";
 
 function DrawingPage() {
+  const onClick = () => {
+    // 그림 완성 의사 묻기
+  };
+
   return (
     <div className="DrawingPage">
       <div className="DrawingPage__left">
         <div className="left__ai">
-          <img src={talkingProfile} alt="토킹 프로필 사진" />{" "}
+          <img src={talkingProfile} alt="토킹 프로필 사진" />
           <span>우리 이야기에 어울리는 그림을 그려보자.</span>
         </div>
         <div className="left__canvas">
@@ -45,6 +49,9 @@ function DrawingPage() {
             <div className="colorPalette__color"></div>
             <div className="colorPalette__color"></div>
             <div className="colorPalette__color"></div>
+            <button className="DrawingPage__completeBtn" onClick={onClick}>
+              완성
+            </button>
           </div>
         </div>
         <div className="right__canvas"></div>

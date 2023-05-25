@@ -76,6 +76,7 @@
 .right__tool .tool_colorPalette {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
 .tool_colorPalette .colorPalette__color {
@@ -83,4 +84,9 @@
   height: 2.4rem;
   background: black;
   border-radius: 100%;
+}
+
+.DrawingPage__completeBtn {
+  margin-left: 1.6rem;
+  font-size: 2rem;
 }
