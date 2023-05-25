@@ -11,7 +11,7 @@ export default function Layout() {
   const [bgColor, setBgColor] = useState(colorTheme.backgroundColor);
 
   useEffect(() => {
-    if (location.pathname === "/chat") {
+    if (location.pathname === "/chat" || location.pathname === "/drawing") {
       setBgColor("#fff");
     }
 
