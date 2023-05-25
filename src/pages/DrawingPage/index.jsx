@@ -5,6 +5,7 @@ import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import Loader from "../../components/Loader";
 
+/* 그리기 모드 */
 const Action = {
   Pencil: "pencil",
   Eraser: "eraser",
@@ -28,6 +29,8 @@ function DrawingPage() {
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
   const [canvas, setCanvas] = useState(null);
+  const [path, setPath] = useState(new Path2D());
+  const [pathList, setPathList] = useState([]);
   const [ctx, setCtx] = useState(null);
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
@@ -48,30 +51,6 @@ function DrawingPage() {
     setCanvas(canvas);
   }, [setCanvas]);
 
-  const startDrawing = () => {
-    if (action === Action.Pencil) {
-      setDrawing(true);
-    }
-  };
-
-  const stopDrawing = () => {
-    if (action === Action.Pencil) {
-      setDrawing(false);
-    }
-  };
-
-  const draw = (event) => {
-    const { offsetX, offsetY } = event.nativeEvent;
-
-    if (drawing) {
-      ctx.lineTo(offsetX, offsetY); // 시작점과 현재 좌표 연결
-      ctx.stroke(); // 선 그리기
-    } else {
-      ctx.beginPath(); // 새로운 path 생성
-      ctx.moveTo(offsetX, offsetY); // 시작점 옮기기
-    }
-  };
-
   const onClickAction = (event) => {
     const target = event.target;
     let action = "";
@@ -81,6 +60,48 @@ function DrawingPage() {
       action = target.parentElement.parentElement.dataset.action;
     }
     setAction(action);
+  };
+
+  const startDrawing = () => {
+    if (action === Action.Pencil) {
+      setDrawing(true);
+      setPath(new Path2D()); // 그리기 시작할 때, 새 path 객체 생성
+    }
+  };
+
+  const stopDrawing = () => {
+    if (action === Action.Pencil) {
+      setDrawing(false);
+      // 마우스를 떼면 그린 path 저장
+      setPathList((current) => [...current, path]);
+    }
+  };
+
+  const draw = (event) => {
+    const { offsetX, offsetY } = event.nativeEvent;
+
+    if (drawing) {
+      path.lineTo(offsetX, offsetY); // 시작점과 현재 좌표 연결
+      ctx.stroke(path); // 선 그리기
+    } else {
+      path.moveTo(offsetX, offsetY); // 시작점 옮기기
+    }
+  };
+
+  const paint = (event) => {
+    if (action === Action.Paint) {
+      const { offsetX, offsetY } = event.nativeEvent;
+
+      // 클릭한 path 찾기
+      for (const p of pathList) {
+        const isPointInPath = ctx.isPointInPath(p, offsetX, offsetY);
+        if (isPointInPath) {
+          // 해당 path 내부 채우기
+          ctx.fill(p);
+          break;
+        }
+      }
+    }
   };
 
   const onClickPalette = (event) => {
@@ -180,6 +201,7 @@ function DrawingPage() {
             onMouseUp={stopDrawing}
             onMouseMove={draw}
             onMouseLeave={stopDrawing}
+            onClick={paint}
           ></canvas>
         </div>
       </div>
