@@ -5,12 +5,20 @@ import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import Loader from "../../components/Loader";
 
+const Action = {
+  Pencil: "pencil",
+  Eraser: "eraser",
+  Paint: "paint",
+};
+
 function DrawingPage() {
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
-  const [painting, setPainting] = useState(false); // 그리는 중이면 true 아니면 false
+  const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
+  const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
+  const [erasing, setErasing] = useState(false); // 지우는 중이면 true 아니면 false
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,26 +32,41 @@ function DrawingPage() {
     // state 저장
     setCtx(ctx);
     setCanvas(canvas);
-  }, []);
+  }, [setCanvas]);
 
-  const startPainting = () => {
-    setPainting(true);
+  const startDrawing = () => {
+    if (action === Action.Pencil) {
+      setDrawing(true);
+    }
   };
 
-  const stopPainting = () => {
-    setPainting(false);
+  const stopDrawing = () => {
+    if (action === Action.Pencil) {
+      setDrawing(false);
+    }
   };
 
-  const paint = (event) => {
+  const draw = (event) => {
     const { offsetX, offsetY } = event.nativeEvent;
 
-    if (painting) {
+    if (drawing) {
       ctx.lineTo(offsetX, offsetY); // 시작점과 현재 좌표 연결
       ctx.stroke(); // 선 그리기
     } else {
       ctx.beginPath(); // 새로운 path 생성
       ctx.moveTo(offsetX, offsetY); // 시작점 옮기기
     }
+  };
+
+  const onClickAction = (event) => {
+    const target = event.target;
+    let action = "";
+    if (target.tagName === "svg") {
+      action = target.dataset.action;
+    } else if (target.tagName === "path") {
+      action = target.parentElement.parentElement.dataset.action;
+    }
+    setAction(action);
   };
 
   const onClickComplete = (event) => {
@@ -74,10 +97,10 @@ function DrawingPage() {
       </div>
       <div className="DrawingPage__right">
         <div className="right__tool">
-          <div className="tool__action">
-            <RiPencilFill className="tool__icon" />
-            <RiEraserFill className="tool__icon" />
-            <RiPaintFill className="tool__icon" />
+          <div className="tool__action" onClick={onClickAction}>
+            <RiPencilFill className="tool__icon" data-action={Action.Pencil} />
+            <RiEraserFill className="tool__icon" data-action={Action.Eraser} />
+            <RiPaintFill className="tool__icon" data-action={Action.Paint} />
           </div>
           <div className="tool_colorPalette">
             <div className="colorPalette__color"></div>
@@ -103,10 +126,10 @@ function DrawingPage() {
           <canvas
             className="canvas__content"
             ref={canvasRef}
-            onMouseDown={startPainting}
-            onMouseUp={stopPainting}
-            onMouseMove={paint}
-            onMouseLeave={stopPainting}
+            onMouseDown={startDrawing}
+            onMouseUp={stopDrawing}
+            onMouseMove={draw}
+            onMouseLeave={stopDrawing}
           ></canvas>
         </div>
       </div>
