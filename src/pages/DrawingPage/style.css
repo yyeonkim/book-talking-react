@@ -58,6 +58,7 @@
   border: 1px solid var(--grey);
   border-radius: 1.6rem;
   width: 60%;
+  overflow: hidden;
 }
 
 .right__tool {
@@ -84,6 +85,10 @@
   height: 2.4rem;
   background: black;
   border-radius: 100%;
+}
+
+.right__canvas {
+  height: 100%;
 }
 
 .DrawingPage__completeBtn {

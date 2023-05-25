@@ -1,11 +1,52 @@
 import { RiPencilFill, RiEraserFill, RiPaintFill } from "react-icons/ri";
+import { useEffect, useRef, useState } from "react";
 
 import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import Loader from "../../components/Loader";
 
 function DrawingPage() {
-  const onClick = () => {
+  const canvasRef = useRef(null);
+  const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
+  const [canvas, setCanvas] = useState(null);
+  const [ctx, setCtx] = useState(null);
+  const [painting, setPainting] = useState(false); // 그리는 중이면 true 아니면 false
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvasRef.current.getContext("2d");
+    // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
+    canvas.width = parentOfCanvasRef.current.offsetWidth;
+    canvas.height = parentOfCanvasRef.current.offsetHeight;
+    // context 선 스타일 지정
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#000";
+    // state 저장
+    setCtx(ctx);
+    setCanvas(canvas);
+  }, []);
+
+  const startPainting = () => {
+    setPainting(true);
+  };
+
+  const stopPainting = () => {
+    setPainting(false);
+  };
+
+  const paint = (event) => {
+    const { offsetX, offsetY } = event.nativeEvent;
+
+    if (painting) {
+      ctx.lineTo(offsetX, offsetY); // 시작점과 현재 좌표 연결
+      ctx.stroke(); // 선 그리기
+    } else {
+      ctx.beginPath(); // 새로운 path 생성
+      ctx.moveTo(offsetX, offsetY); // 시작점 옮기기
+    }
+  };
+
+  const onClickComplete = (event) => {
     // 그림 완성 의사 묻기
   };
 
@@ -49,12 +90,25 @@ function DrawingPage() {
             <div className="colorPalette__color"></div>
             <div className="colorPalette__color"></div>
             <div className="colorPalette__color"></div>
-            <button className="DrawingPage__completeBtn" onClick={onClick}>
+
+            <button
+              className="DrawingPage__completeBtn"
+              onClick={onClickComplete}
+            >
               완성
             </button>
           </div>
         </div>
-        <div className="right__canvas"></div>
+        <div className="right__canvas" ref={parentOfCanvasRef}>
+          <canvas
+            className="canvas__content"
+            ref={canvasRef}
+            onMouseDown={startPainting}
+            onMouseUp={stopPainting}
+            onMouseMove={paint}
+            onMouseLeave={stopPainting}
+          ></canvas>
+        </div>
       </div>
     </div>
   );
