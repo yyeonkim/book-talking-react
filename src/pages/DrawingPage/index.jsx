@@ -29,9 +29,11 @@ function DrawingPage() {
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
   const [canvas, setCanvas] = useState(null);
+  const [ctx, setCtx] = useState(null);
+
   const [path, setPath] = useState(new Path2D());
   const [pathList, setPathList] = useState([]);
-  const [ctx, setCtx] = useState(null);
+
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
   const [erasing, setErasing] = useState(false); // 지우는 중이면 true 아니면 false
@@ -77,6 +79,7 @@ function DrawingPage() {
     }
   };
 
+  /* 선 그리기 */
   const draw = (event) => {
     const { offsetX, offsetY } = event.nativeEvent;
 
@@ -139,7 +142,11 @@ function DrawingPage() {
       <div className="DrawingPage__right">
         <div className="right__tool">
           <div className="tool__action" onClick={onClickAction}>
-            <RiPencilFill className="tool__icon" data-action={Action.Pencil} />
+            <RiPencilFill
+              id="tool__icon--selected"
+              className="tool__icon"
+              data-action={Action.Pencil}
+            />
             <RiEraserFill className="tool__icon" data-action={Action.Eraser} />
             <RiPaintFill className="tool__icon" data-action={Action.Paint} />
           </div>

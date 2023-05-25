@@ -70,8 +70,12 @@
 .right__tool .tool__icon {
   width: 2.4rem;
   height: 2.4rem;
-  color: #666;
+  color: #aeaeae;
   margin-right: 2rem;
+}
+
+#tool__icon--selected {
+  color: black;
 }
 
 .right__tool .tool_colorPalette {
