@@ -1,22 +1,14 @@
 .DrawingPage {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  padding: 0 2.4rem 2.4rem 2.4rem;
-  height: max-content;
+  padding: 0 2.4rem;
   gap: 2rem;
-}
-
-.DrawingPage__content {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  height: 85vh;
 }
 
 .DrawingPage__left {
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 40%;
 }
 
 .left__ai {
@@ -33,7 +25,7 @@
 }
 
 .left__canvas {
-  height: 27.5rem;
+  height: 50%;
   border: 1px solid var(--grey);
   border-radius: 1.6rem 1.6rem 0 0;
   position: relative;
@@ -50,7 +42,8 @@
 }
 
 .left__story {
-  height: 30rem;
+  overflow-y: auto;
+  height: 50%;
   font-size: 2rem;
   padding: 2rem;
   text-align: justify;
@@ -64,8 +57,7 @@
   flex-direction: column;
   border: 1px solid var(--grey);
   border-radius: 1.6rem;
-  width: 55%;
-  height: 64rem;
+  width: 60%;
 }
 
 .right__tool {
