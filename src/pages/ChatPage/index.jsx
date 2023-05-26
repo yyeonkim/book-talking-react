@@ -16,9 +16,15 @@ export default function ChatPage() {
   const naviagte = useNavigate();
 
   useEffect(() => {
-    // 채팅 시작말 가져오기
-    startChat().then((res) => {
-      setChatList([res.data]);
+    // 채팅 시작
+    // gpt 시스템 메시지
+    const systemMessage = {
+      role: "system",
+      content:
+        "You are a Korean elementary student. Your task is to talk about a story with elementary students. Your main objective is to generate story questions of the story an user read to help the user to cultivate imagination. If the user answers your question, you also answer simply and then generate next question. Generate one question at a time and say in Korean, not English. For your first assignment, you are tasked with saying hello to 연이, asking her what book she read recently.",
+    };
+    startChat(systemMessage).then((res) => {
+      setChatList([systemMessage, res.data]);
       setDisable(false);
     });
   }, []);
@@ -49,19 +55,19 @@ export default function ChatPage() {
         // 사용자와 토킹 답변 state에 저장
         setChatList((current) => [...current, res.data]);
         setDisable(false);
-      });
 
-      if (chatList.length >= 15) {
         // 8번 질문 받으면 로딩 화면으로 이동
-        naviagte("/loading", { state: chatList });
-      }
+        if (chatList.length >= 16) {
+          naviagte("/loading", { state: [...chatList, res.data] });
+        }
+      });
     }
   };
 
   return (
     <>
       <div ref={scrollRef} className="ChatPage">
-        {chatList.map((item, index) =>
+        {chatList.slice(1).map((item, index) =>
           item.role === "user" ? (
             <div
               key={`user${index}`}
