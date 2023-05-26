@@ -28,24 +28,24 @@ const ColorPalette = {
 };
 
 function DrawingPage() {
-  const {
-    state: { story, title },
-  } = useLocation();
+  // const {
+  //   state: { story, title },
+  // } = useLocation();
   const [keywordList, setKeywordList] = useState([]);
 
-  useEffect(() => {
-    // 동화에서 키워드 추출
-    getKeywordList(story).then((res) => console.log(res.data));
-  }, [story]);
+  // useEffect(() => {
+  //   // 동화에서 키워드 추출
+  //   getKeywordList(story).then((res) => console.log(res.data));
+  // }, [story]);
 
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
-
   const [path, setPath] = useState(new Path2D());
   const [pathList, setPathList] = useState([]);
-
+  const [backgroundColor, setBackgroundColor] = useState("white");
+  const [selectedColor, setSelectedColor] = useState("black");
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
   const [erasing, setErasing] = useState(false); // 지우는 중이면 true 아니면 false
@@ -103,9 +103,11 @@ function DrawingPage() {
     }
   };
 
+  /* 채우기 */
   const paint = (event) => {
     if (action === Action.Paint) {
       const { offsetX, offsetY } = event.nativeEvent;
+      let isBackground = true;
 
       // 클릭한 path 찾기
       for (const p of pathList) {
@@ -113,8 +115,14 @@ function DrawingPage() {
         if (isPointInPath) {
           // 해당 path 내부 채우기
           ctx.fill(p);
+          isBackground = false;
           break;
         }
+      }
+      // 해당하는 path가 없으면
+      if (isBackground) {
+        // 캔버스 바탕 채우기
+        setBackgroundColor(selectedColor);
       }
     }
   };
@@ -123,6 +131,7 @@ function DrawingPage() {
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
+    setSelectedColor(color);
   };
 
   const onClickComplete = (event) => {
@@ -214,6 +223,7 @@ function DrawingPage() {
         </div>
         <div className="right__canvas" ref={parentOfCanvasRef}>
           <canvas
+            style={{ backgroundColor }}
             className="canvas__content"
             ref={canvasRef}
             onMouseDown={startDrawing}
