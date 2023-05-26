@@ -66,14 +66,29 @@ function DrawingPage() {
   }, [setCanvas]);
 
   const onClickAction = (event) => {
-    const target = event.target;
+    let target = event.target;
+    let parent; // 아이콘을 모두 포함한 부모 요소
     let action = "";
+
     if (target.tagName === "svg") {
       action = target.dataset.action;
+      parent = target.parentElement;
+      // svg 안에 있는 path가 선택되면
     } else if (target.tagName === "path") {
       action = target.parentElement.parentElement.dataset.action;
+      parent = target.parentElement.parentElement.parentElement;
+      target = target.parentElement.parentElement; // svg를 target으로 설정
     }
     setAction(action);
+
+    // 이전 아이콘 id 제거
+    for (const child of parent.children) {
+      if (child.id === "tool__icon--selected") {
+        child.id = "";
+      }
+    }
+    // 선택한 아이콘에 id 추가
+    target.id = "tool__icon--selected";
   };
 
   const startDrawing = () => {
