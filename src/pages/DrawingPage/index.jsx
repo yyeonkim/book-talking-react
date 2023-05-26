@@ -134,13 +134,17 @@ function DrawingPage() {
     setAction(action);
 
     // 이전 아이콘 id 제거
-    for (const child of parent.children) {
-      if (child.id === "tool__icon--selected") {
+    removeChildId(parent, "tool__icon--selected");
+    // 선택한 아이콘에 id 추가
+    target.id = "tool__icon--selected";
+  };
+
+  const removeChildId = (parentElement, id) => {
+    for (const child of parentElement.children) {
+      if (child.id === id) {
         child.id = "";
       }
     }
-    // 선택한 아이콘에 id 추가
-    target.id = "tool__icon--selected";
   };
 
   const startDrawing = () => {
@@ -190,9 +194,8 @@ function DrawingPage() {
           break;
         }
       }
-      // 해당하는 path가 없으면
+      // 해당하는 path가 없으면 캔버스 바탕 채우기
       if (isBackground) {
-        // 캔버스 바탕 채우기
         setBackgroundColor(selectedColor);
       }
     }
@@ -216,21 +219,25 @@ function DrawingPage() {
       ctx.strokeStyle = hexColor;
       ctx.fillStyle = hexColor;
       setSelectedColor(hexColor);
-
-      let editedPaletteList = [...colorPaletteList];
-      // 이전 color selected false
-      let index = editedPaletteList.findIndex((item) => item.selected === true);
-      if (index !== -1) {
-        editedPaletteList[index].selected = false;
-      }
-      // 선택한 color selected true
-      index = editedPaletteList.findIndex((item) => item.color === hexColor);
-
-      if (index !== -1) {
-        editedPaletteList[index].selected = true;
-      }
-      setColorPaletteList(editedPaletteList);
+      selectColorInPalette(hexColor);
     }
+  };
+
+  /* 팔레트 리스트에서 selected 값 수정 */
+  const selectColorInPalette = (hexColor) => {
+    let editedPaletteList = [...colorPaletteList];
+    // 이전 color selected false
+    let index = editedPaletteList.findIndex((item) => item.selected === true);
+    if (index !== -1) {
+      editedPaletteList[index].selected = false;
+    }
+    // 선택한 color selected true
+    index = editedPaletteList.findIndex((item) => item.color === hexColor);
+
+    if (index !== -1) {
+      editedPaletteList[index].selected = true;
+    }
+    setColorPaletteList(editedPaletteList);
   };
 
   const rgbToHex = (rgbString) => {
