@@ -1,4 +1,9 @@
-import { RiPencilFill, RiEraserFill, RiPaintFill } from "react-icons/ri";
+import {
+  RiPencilFill,
+  RiEraserFill,
+  RiPaintFill,
+  RiCheckFill,
+} from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
 import "./style.css";
@@ -15,7 +20,7 @@ const Action = {
 };
 
 const ColorPalette = {
-  Black: "#000",
+  Black: "#000000",
   Red: "#e12828",
   Orange: "#ffa843",
   Yellow: "#ffe600",
@@ -26,6 +31,49 @@ const ColorPalette = {
   Pink: "#ef78a3",
   Grey: "#818181",
 };
+
+const initialPaletteList = [
+  {
+    color: ColorPalette.Black,
+    selected: true,
+  },
+  {
+    color: ColorPalette.Red,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Orange,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Yellow,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Green,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Skyblue,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Blue,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Pupple,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Pink,
+    selected: false,
+  },
+  {
+    color: ColorPalette.Grey,
+    selected: false,
+  },
+];
 
 function DrawingPage() {
   // const {
@@ -42,10 +90,11 @@ function DrawingPage() {
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
-  const [path, setPath] = useState(new Path2D());
-  const [pathList, setPathList] = useState([]);
-  const [backgroundColor, setBackgroundColor] = useState("white");
-  const [selectedColor, setSelectedColor] = useState("black");
+  const [path, setPath] = useState(new Path2D()); // 사용자가 현재 그리는 path
+  const [pathList, setPathList] = useState([]); // 사용자가 그린 path 배열
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff"); // 캔버스 배경 색상
+  const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
+  const [colorPaletteList, setColorPaletteList] = useState(initialPaletteList);
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
   const [erasing, setErasing] = useState(false); // 지우는 중이면 true 아니면 false
@@ -67,10 +116,13 @@ function DrawingPage() {
 
   const onClickAction = (event) => {
     let target = event.target;
-    let parent; // 아이콘을 모두 포함한 부모 요소
+    let parent = target; // 아이콘을 모두 포함한 부모 요소
     let action = "";
 
-    if (target.tagName === "svg") {
+    // 바로 부모 요소가 선택되면 동작 X
+    if (target.tagName === "DIV") {
+      return;
+    } else if (target.tagName === "svg") {
       action = target.dataset.action;
       parent = target.parentElement;
       // svg 안에 있는 path가 선택되면
@@ -94,7 +146,8 @@ function DrawingPage() {
   const startDrawing = () => {
     if (action === Action.Pencil) {
       setDrawing(true);
-      setPath(new Path2D()); // 그리기 시작할 때, 새 path 객체 생성
+      // 그리기 시작할 때, 새 path 객체 생성
+      setPath(new Path2D());
     }
   };
 
@@ -111,10 +164,13 @@ function DrawingPage() {
     const { offsetX, offsetY } = event.nativeEvent;
 
     if (drawing) {
-      path.lineTo(offsetX, offsetY); // 시작점과 현재 좌표 연결
-      ctx.stroke(path); // 선 그리기
+      // 시작점과 현재 좌표 연결
+      path.lineTo(offsetX, offsetY);
+      // 선 그리기
+      ctx.stroke(path);
     } else {
-      path.moveTo(offsetX, offsetY); // 시작점 옮기기
+      // 시작점 옮기기
+      path.moveTo(offsetX, offsetY);
     }
   };
 
@@ -143,10 +199,58 @@ function DrawingPage() {
   };
 
   const onClickPalette = (event) => {
-    const color = event.target.style.backgroundColor;
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    setSelectedColor(color);
+    let target = event.target;
+
+    // 체크 아이콘이 클릭되면 target을 부모 요소로 조정
+    if (target.tagName === "svg") {
+      target = target.parentElement;
+    } else if (target.tagName === "path") {
+      target = target.parentElement.parentElement;
+    }
+
+    const rgbColor = target.style.backgroundColor;
+    const hexColor = rgbToHex(rgbColor);
+
+    // 이전과 다른 색을 선택했을 때만 작동
+    if (selectedColor !== hexColor) {
+      ctx.strokeStyle = hexColor;
+      ctx.fillStyle = hexColor;
+      setSelectedColor(hexColor);
+
+      let editedPaletteList = [...colorPaletteList];
+      // 이전 color selected false
+      let index = editedPaletteList.findIndex((item) => item.selected === true);
+      if (index !== -1) {
+        editedPaletteList[index].selected = false;
+      }
+      // 선택한 color selected true
+      index = editedPaletteList.findIndex((item) => item.color === hexColor);
+
+      if (index !== -1) {
+        editedPaletteList[index].selected = true;
+      }
+      setColorPaletteList(editedPaletteList);
+    }
+  };
+
+  const rgbToHex = (rgbString) => {
+    let result = "#"; // 반환 결과
+    // 숫자 배열로 변환
+    let rgbInt = rgbString
+      .slice(4, rgbString.length - 1)
+      .split(",")
+      .map((item) => Number(item.trim()));
+    // 각 값을 16 진수 문자로 변환
+    rgbInt.forEach((item) => {
+      let str = item.toString(16);
+      if (str.length === 1) {
+        result += `0${str}`; // 한 자리 수는 앞에 0 붙이기
+      } else {
+        result += str;
+      }
+    });
+
+    return result;
   };
 
   const onClickComplete = (event) => {
@@ -186,48 +290,16 @@ function DrawingPage() {
             <RiEraserFill className="tool__icon" data-action={Action.Eraser} />
             <RiPaintFill className="tool__icon" data-action={Action.Paint} />
           </div>
-          <div className="tool_colorPalette" onClick={onClickPalette}>
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Black }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Red }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Orange }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Yellow }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Green }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Skyblue }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Blue }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Pupple }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Pink }}
-            />
-            <div
-              className="colorPalette__color"
-              style={{ backgroundColor: ColorPalette.Grey }}
-            />
-
+          <div className="tool_colorPalette">
+            {colorPaletteList.map((item) => (
+              <div
+                className="colorPalette__color"
+                style={{ backgroundColor: item.color }}
+                onClick={onClickPalette}
+              >
+                {item.selected && <RiCheckFill color="white" />}
+              </div>
+            ))}
             <button
               className="DrawingPage__completeBtn"
               onClick={onClickComplete}
