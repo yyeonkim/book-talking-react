@@ -4,8 +4,21 @@ import "./style.css";
 import YellowButton from "../../components/YellowButton";
 import talkingProfile from "../../assets/talking_profile.png";
 import Loader from "../../components/Loader";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getKeywordList } from "../../api/chatAPI";
 
 function DrawingPage() {
+  const {
+    state: { story, title },
+  } = useLocation();
+  const [keywordList, setKeywordList] = useState([]);
+
+  useEffect(() => {
+    // 동화에서 키워드 추출
+    getKeywordList(story).then((res) => console.log(res.data));
+  }, [story]);
+
   return (
     <div className="DrawingPage">
       <div className="DrawingPage__content">

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const startChat = async () => {
-  return await axios.get("/api/chat/start");
+export const startChat = async (systemMessage) => {
+  return await axios.post("/api/chat/start", systemMessage);
 };
 
 export const sendMessage = async (chatList) => {
@@ -10,4 +10,8 @@ export const sendMessage = async (chatList) => {
 
 export const summarizeChat = async (chatList) => {
   return await axios.post("/api/chat/summarize", chatList);
+};
+
+export const getKeywordList = async (story) => {
+  return await axios.post("/api/chat/keyword", story);
 };
