@@ -93,11 +93,15 @@
   justify-content: center;
 }
 
-.right__canvas {
-  height: 100%;
+.tool__buttons {
+  display: flex;
+  gap: 1.6rem;
 }
 
-.DrawingPage__completeBtn {
-  margin-left: 1.6rem;
+.tool__button {
   font-size: 2rem;
+}
+
+.right__canvas {
+  height: 100%;
 }

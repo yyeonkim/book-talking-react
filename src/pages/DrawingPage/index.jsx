@@ -1,9 +1,4 @@
-import {
-  RiPencilFill,
-  RiEraserFill,
-  RiPaintFill,
-  RiCheckFill,
-} from "react-icons/ri";
+import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
 import "./style.css";
@@ -15,7 +10,6 @@ import { getKeywordList } from "../../api/chatAPI";
 /* 그리기 모드 */
 const Action = {
   Pencil: "pencil",
-  Eraser: "eraser",
   Paint: "paint",
 };
 
@@ -212,6 +206,16 @@ function DrawingPage() {
     return result;
   };
 
+  /* 캔버스 모두 지우기 */
+  const clearCanvas = () => {
+    // path 지우기
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // path 초기화
+    ctx.beginPath();
+    setPathList([]);
+    setBackgroundColor("#fff");
+  };
+
   const onClickComplete = (event) => {
     // 그림 완성 의사 묻기
   };
@@ -246,12 +250,12 @@ function DrawingPage() {
               className="tool__icon"
               data-action={Action.Pencil}
             />
-            <RiEraserFill className="tool__icon" data-action={Action.Eraser} />
             <RiPaintFill className="tool__icon" data-action={Action.Paint} />
           </div>
           <div className="tool_colorPalette">
             {colorPaletteList.map((item) => (
               <div
+                key={item}
                 className="colorPalette__color"
                 style={{ backgroundColor: item }}
                 onClick={onClickPalette}
@@ -259,10 +263,12 @@ function DrawingPage() {
                 {item === selectedColor && <RiCheckFill color="white" />}
               </div>
             ))}
-            <button
-              className="DrawingPage__completeBtn"
-              onClick={onClickComplete}
-            >
+          </div>
+          <div className="tool__buttons">
+            <button className="tool__button" onClick={clearCanvas}>
+              지우기
+            </button>
+            <button className="tool__button" onClick={onClickComplete}>
               완성
             </button>
           </div>
