@@ -30,7 +30,6 @@
   border-radius: 1.6rem 1.6rem 0 0;
   position: relative;
 }
-
 .canvas__copyButton {
   position: absolute;
   top: 0;
@@ -50,58 +49,4 @@
   line-height: 1.5;
   background-color: var(--grey);
   border-radius: 0 0 1.6rem 1.6rem;
-}
-
-.DrawingPage__right {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--grey);
-  border-radius: 1.6rem;
-  width: 60%;
-  overflow: hidden;
-}
-
-.right__tool {
-  padding: 1.6rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.right__tool .tool__icon {
-  width: 2.4rem;
-  height: 2.4rem;
-  color: #aeaeae;
-  margin-right: 2rem;
-}
-
-#tool__icon--selected {
-  color: black;
-}
-
-.right__tool .tool_colorPalette {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.tool_colorPalette .colorPalette__color {
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tool__buttons {
-  display: flex;
-  gap: 1.6rem;
-}
-
-.tool__button {
-  font-size: 2rem;
-}
-
-.right__canvas {
-  height: 100%;
 }
