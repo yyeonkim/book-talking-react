@@ -33,46 +33,16 @@ const ColorPalette = {
 };
 
 const initialPaletteList = [
-  {
-    color: ColorPalette.Black,
-    selected: true,
-  },
-  {
-    color: ColorPalette.Red,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Orange,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Yellow,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Green,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Skyblue,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Blue,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Pupple,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Pink,
-    selected: false,
-  },
-  {
-    color: ColorPalette.Grey,
-    selected: false,
-  },
+  ColorPalette.Black,
+  ColorPalette.Red,
+  ColorPalette.Orange,
+  ColorPalette.Yellow,
+  ColorPalette.Green,
+  ColorPalette.Skyblue,
+  ColorPalette.Blue,
+  ColorPalette.Pupple,
+  ColorPalette.Pink,
+  ColorPalette.Grey,
 ];
 
 function DrawingPage() {
@@ -219,25 +189,7 @@ function DrawingPage() {
       ctx.strokeStyle = hexColor;
       ctx.fillStyle = hexColor;
       setSelectedColor(hexColor);
-      selectColorInPalette(hexColor);
     }
-  };
-
-  /* 팔레트 리스트에서 selected 값 수정 */
-  const selectColorInPalette = (hexColor) => {
-    let editedPaletteList = [...colorPaletteList];
-    // 이전 color selected false
-    let index = editedPaletteList.findIndex((item) => item.selected === true);
-    if (index !== -1) {
-      editedPaletteList[index].selected = false;
-    }
-    // 선택한 color selected true
-    index = editedPaletteList.findIndex((item) => item.color === hexColor);
-
-    if (index !== -1) {
-      editedPaletteList[index].selected = true;
-    }
-    setColorPaletteList(editedPaletteList);
   };
 
   const rgbToHex = (rgbString) => {
@@ -301,10 +253,10 @@ function DrawingPage() {
             {colorPaletteList.map((item) => (
               <div
                 className="colorPalette__color"
-                style={{ backgroundColor: item.color }}
+                style={{ backgroundColor: item }}
                 onClick={onClickPalette}
               >
-                {item.selected && <RiCheckFill color="white" />}
+                {item === selectedColor && <RiCheckFill color="white" />}
               </div>
             ))}
             <button
