@@ -40,15 +40,15 @@ const initialPaletteList = [
 ];
 
 function DrawingPage() {
-  // const {
-  //   state: { story, title },
-  // } = useLocation();
+  const {
+    state: { story, title },
+  } = useLocation();
   const [keywordList, setKeywordList] = useState([]);
 
-  // useEffect(() => {
-  //   // 동화에서 키워드 추출
-  //   getKeywordList(story).then((res) => console.log(res.data));
-  // }, [story]);
+  useEffect(() => {
+    // 동화에서 키워드 추출
+    getKeywordList(story).then((res) => console.log(res.data));
+  }, [story]);
 
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
