@@ -1,11 +1,12 @@
 import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import Loader from "../../components/Loader";
-import { useLocation } from "react-router-dom";
 import { getKeywordList } from "../../api/chatAPI";
+import { getImageByKeyword } from "../../api/quickdrawAPI";
 
 /* 그리기 모드 */
 const Action = {
@@ -47,7 +48,11 @@ function DrawingPage() {
 
   useEffect(() => {
     // 동화에서 키워드 추출
-    getKeywordList(story).then((res) => console.log(res.data));
+    getKeywordList(story).then(async (res) => {
+      setKeywordList(res.data);
+      const response = await getImageByKeyword(res.data);
+      console.log(response);
+    });
   }, [story]);
 
   const canvasRef = useRef(null);
