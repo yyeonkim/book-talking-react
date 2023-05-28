@@ -20,11 +20,8 @@ function AiCanvas() {
   const [pathList, setPathList] = useState([]);
   const [drawingName, setDrawingName] = useState("");
 
-  /* 캔버스 설정하기 */
-  useEffect(() => {}, []);
-
-  /* 동화 키워드로 관련 그림 가져오기 */
   useEffect(() => {
+    /* 캔버스 기본 설정 */
     const canvas = canvasRef.current;
     const ctx = canvasRef.current.getContext("2d");
     const parentWidth = parentOfCanvasRef.current.offsetWidth;
@@ -37,6 +34,7 @@ function AiCanvas() {
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000";
 
+    /* 동화 키워드로 관련 그림 가져오기 */
     (async () => {
       let chatList = [
         {
@@ -46,13 +44,13 @@ function AiCanvas() {
       ];
       let imageRes;
 
+      // 관련 그림이 있을 때까지 키워드 계속 추출
       while (true) {
         const res = await getKeywordList(chatList);
-        console.log(chatList);
         const keywordList = stringToArray(res.data.content); // 문자를 배열로 바꾸기
         imageRes = await getImageByKeyword(keywordList);
 
-        // 관련 그림이 있을 때까지 키워드 계속 추출
+        // 실패하면 메시지를 추가하고 다시 키워드 요청
         if (imageRes.message === "fail") {
           chatList.push(res.data, {
             role: "user",
@@ -68,16 +66,8 @@ function AiCanvas() {
       // 영어 단어를 한글로 가져오기
       const res = await translateKeyword(keyword);
       setDrawingName(res.data.content);
-
-      // 좌표로 그림 그리기
-      for (const [xList, yList] of coordinates) {
-        const aiPath = new Path2D();
-        for (let i = 0; i < xList.length; i++) {
-          aiPath.lineTo(xList[i] + startPoint[0], yList[i] + startPoint[1]); // 선 연결
-          ctx.stroke(aiPath); // 선 그리기
-        }
-        setPathList((current) => [...current, aiPath]);
-      }
+      // 이미지 좌표로 그림 그리기
+      drawOnAiCanvas({ coordinates, startPoint, ctx });
     })();
   }, [story]);
 
@@ -87,6 +77,20 @@ function AiCanvas() {
       .slice(9, -1)
       .split(",")
       .map((keyword) => keyword.trim());
+  };
+
+  /* 시작점부터 좌표에 따라 그림 표시하기 */
+  const drawOnAiCanvas = ({ coordinates, startPoint, ctx }) => {
+    const [startX, startY] = startPoint;
+    for (const [xList, yList] of coordinates) {
+      const aiPath = new Path2D();
+
+      for (let i = 0; i < xList.length; i++) {
+        aiPath.lineTo(xList[i] + startX, yList[i] + startY); // 선 연결
+        ctx.stroke(aiPath); // 선 그리기
+      }
+      setPathList((current) => [...current, aiPath]);
+    }
   };
 
   return (
