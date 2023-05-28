@@ -22,7 +22,7 @@ const ColorPalette = {
   Grey: "#818181",
 };
 
-const initialPaletteList = [
+const colorPaletteList = [
   ColorPalette.Black,
   ColorPalette.Red,
   ColorPalette.Orange,
@@ -44,10 +44,8 @@ function Canvas() {
   const [pathList, setPathList] = useState([]); // 사용자가 그린 path 배열
   const [backgroundColor, setBackgroundColor] = useState("#ffffff"); // 캔버스 배경 색상
   const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
-  const [colorPaletteList, setColorPaletteList] = useState(initialPaletteList);
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
-  const [erasing, setErasing] = useState(false); // 지우는 중이면 true 아니면 false
 
   useEffect(() => {
     const canvas = canvasRef.current;
