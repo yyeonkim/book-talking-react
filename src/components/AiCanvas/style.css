@@ -4,6 +4,14 @@
   border-radius: 1.6rem 1.6rem 0 0;
   position: relative;
 }
+
+.AiCanvas_loader {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem 2rem;
+}
+
 .AiCanvas__copyButton {
   position: absolute;
   top: 0;

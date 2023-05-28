@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import "./style.css";
 import { getKeywordList } from "../../api/chatAPI";
 import { getImageByKeyword } from "../../api/quickdrawAPI";
-import Loader from "../../components/Loader";
 
 function AiCanvas() {
   //      const {
@@ -66,8 +65,8 @@ function AiCanvas() {
   return (
     <div className="AiCanvas" ref={parentOfCanvasRef}>
       <canvas className="AiCanvas__drawing" ref={canvasRef}></canvas>
-      {pathList === [] ? (
-        <Loader />
+      {pathList.length === 0 ? (
+        <div className="AiCanvas_loader">. . .</div>
       ) : (
         <button className="AiCanvas__copyButton">가져오기</button>
       )}
