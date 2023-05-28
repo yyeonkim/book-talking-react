@@ -9,11 +9,9 @@ export const getImageByKeyword = async (keywordList) => {
       }
     );
     if (response.status === 200) {
-      return response;
+      return { message: "success", data: response.data };
     } else if (response.status === 404) {
-      console.log("try again");
-      // 새로운 키워드 받아오기
-      return;
+      return { message: "fail" };
     } else {
       throw Error();
     }
