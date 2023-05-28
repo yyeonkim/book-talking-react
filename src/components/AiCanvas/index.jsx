@@ -97,11 +97,12 @@ function AiCanvas() {
     <div className="AiCanvas">
       <div className="AiCanvas__chat">
         <img src={talkingProfile} alt="토킹 프로필 사진" />
-        <span>
-          {drawingName === ""
-            ? "우리 이야기에 어울리는 그림을 그려보자."
-            : `나는 "${drawingName}"을/를 그려봤어. 어때?`}
-        </span>
+        <div className="chat__text">
+          <span>우리 이야기에 어울리는 그림을 그려보자.</span>
+          {drawingName !== "" && (
+            <span>나는 "{drawingName}"을/를 그려봤어. 어때?</span>
+          )}
+        </div>
       </div>
       <div className="AiCanvas__canvas" ref={parentOfCanvasRef}>
         <canvas className="canvas__drawing" ref={canvasRef} />
