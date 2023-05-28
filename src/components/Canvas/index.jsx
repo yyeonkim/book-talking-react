@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
 
 import "./style.css";
-import { getKeywordList } from "../../api/chatAPI";
-import { getImageByKeyword } from "../../api/quickdrawAPI";
 
 /* 그리기 모드 */
 const Action = {
