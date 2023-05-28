@@ -48,27 +48,37 @@ function Canvas() {
   const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
-  const [isCopy, setIsCopy] = useRecoilState(isCopyState);
-  const imageCoordList = useRecoilValue(imageCoordListState);
-  const [startPoint, setStartPoint] = useState(null);
+
+  const [isCopy, setIsCopy] = useRecoilState(isCopyState); // '가져오기'를 클릭하면 true가 되면서 그림을 가져올 수 있음
+  const imageCoordList = useRecoilValue(imageCoordListState); // ai 그림의 좌표
+  const [startPoint, setStartPoint] = useState(null); // ai 그림을 복사할 시작점
 
   useEffect(() => {
+    // '가져오기'를 누르고, 시작점을 지정했으면
     if (isCopy && startPoint) {
-      // ai 드로잉을 사용자 캔버스로 가져오기
-      for (const [xList, yList] of imageCoordList) {
-        const newPath = new Path2D();
-
-        for (let i = 0; i < xList.length; i++) {
-          newPath.lineTo(xList[i] + startPoint.x, yList[i] + startPoint.y); // 선 연결
-          ctx.stroke(newPath); // 선 그리기
-        }
-        setPathList((current) => [...current, newPath]);
-      }
+      // ai 그림을 사용자 캔버스로 가져오기
+      copyDrawing();
       setIsCopy(false);
     }
   }, [startPoint]);
 
+  const copyDrawing = () => {
+    for (const [xList, yList] of imageCoordList) {
+      const newPath = new Path2D();
+
+      for (let i = 0; i < xList.length; i++) {
+        newPath.lineTo(xList[i] + startPoint.x, yList[i] + startPoint.y); // 선 연결
+        ctx.stroke(newPath); // 선 그리기
+      }
+      setPathList((current) => [...current, newPath]);
+    }
+  };
+
   useEffect(() => {
+    initCanvas();
+  }, [setCanvas]);
+
+  const initCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = canvasRef.current.getContext("2d");
     // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
@@ -81,7 +91,7 @@ function Canvas() {
     // state 저장
     setCtx(ctx);
     setCanvas(canvas);
-  }, [setCanvas]);
+  };
 
   const onClickAction = (event) => {
     let target = event.target;
@@ -118,16 +128,18 @@ function Canvas() {
 
   const startDrawing = () => {
     if (action === Action.Pencil) {
+      // 마우스를 누르면, 드로잉 시작
       setDrawing(true);
-      // 그리기 시작할 때, 새 path 객체 생성
+      // 새 path 객체 생성
       setPath(new Path2D());
     }
   };
 
   const stopDrawing = () => {
     if (action === Action.Pencil) {
+      // 마우스를 떼면 드로잉 중단
       setDrawing(false);
-      // 마우스를 떼면 그린 path 저장
+      // 이제까지 그린 path 저장
       setPathList((current) => [...current, path]);
     }
   };
