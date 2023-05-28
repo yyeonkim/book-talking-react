@@ -16,3 +16,9 @@ export const getKeywordList = async (story) => {
   const res = await axios.post("/api/chat/keyword", story);
   return res.data.content.slice(9, -1).split(","); // 문자 배열로 변환
 };
+
+export const translateKeyword = async (keyword) => {
+  return await axios.get("/api/chat/translate", {
+    params: { keyword },
+  });
+};
