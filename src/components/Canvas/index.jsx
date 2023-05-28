@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
 
 import "./style.css";
+import { useRecoilValue } from "recoil";
+import { imageCoordListState, isCopyState } from "../../recoil/drawing/atom";
 
 /* 그리기 모드 */
 const Action = {
@@ -46,6 +48,23 @@ function Canvas() {
   const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
+  const isCopy = useRecoilValue(isCopyState);
+  const imageCoordList = useRecoilValue(imageCoordListState);
+
+  useEffect(() => {
+    if (isCopy) {
+      // ai 드로잉 사용자 캔버스로 가져오기
+      for (const [xList, yList] of imageCoordList) {
+        const newPath = new Path2D();
+
+        for (let i = 0; i < xList.length; i++) {
+          newPath.lineTo(xList[i] + 100, yList[i] + 100); // 선 연결
+          ctx.stroke(newPath); // 선 그리기
+        }
+        setPathList((current) => [...current, newPath]);
+      }
+    }
+  }, [isCopy]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

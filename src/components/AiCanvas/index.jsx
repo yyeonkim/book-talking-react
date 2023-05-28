@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import { getKeywordList, translateKeyword } from "../../api/chatAPI";
 import { getImageByKeyword } from "../../api/quickdrawAPI";
+import { imageCoordListState, isCopyState } from "../../recoil/drawing/atom";
 
 const baseMessage =
   "위 이야기에서 다섯 개의 키워드를 영어로 알려줘. 부연 설명 하지 말고, 아래처럼 배열 형태로 알려줘.\nanswer: [word1, word2, word3, word4, word5]";
@@ -19,6 +21,8 @@ function AiCanvas() {
   const parentOfCanvasRef = useRef(null);
   const [pathList, setPathList] = useState([]);
   const [drawingName, setDrawingName] = useState("");
+  const setImageCoordList = useSetRecoilState(imageCoordListState);
+  const setIsCopy = useSetRecoilState(isCopyState);
 
   useEffect(() => {
     /* 캔버스 기본 설정 */
@@ -68,8 +72,9 @@ function AiCanvas() {
       setDrawingName(res.data.content);
       // 이미지 좌표로 그림 그리기
       drawOnAiCanvas({ coordinates, startPoint, ctx });
+      setImageCoordList(coordinates);
     })();
-  }, [story]);
+  }, []);
 
   /* 배열 형태의 문자를 실제 배열로 변환 */
   const stringToArray = (str) => {
@@ -93,6 +98,11 @@ function AiCanvas() {
     }
   };
 
+  const onClick = () => {
+    // 사용자 캔버스로 그림 가져오기
+    setIsCopy(true);
+  };
+
   return (
     <div className="AiCanvas">
       <div className="AiCanvas__chat">
@@ -109,7 +119,9 @@ function AiCanvas() {
         {pathList.length === 0 ? (
           <div className="canvas__loader">. . .</div>
         ) : (
-          <button className="canvas__copyButton">가져오기</button>
+          <button className="canvas__copyButton" onClick={onClick}>
+            가져오기
+          </button>
         )}
       </div>
       <div className="AiCanvas__story">

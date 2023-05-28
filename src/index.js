@@ -13,6 +13,7 @@ import Layout from "./components/Layout";
 import LoadingPage from "./pages/LoadingPage";
 import StoryPage from "./pages/StoryPage";
 import DrawingPage from "./pages/DrawingPage";
+import { RecoilRoot } from "recoil";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,11 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <RecoilRoot>
+    <RouterProvider router={router} />
+  </RecoilRoot>
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
