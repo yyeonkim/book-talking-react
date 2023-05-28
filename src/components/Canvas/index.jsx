@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
 
 import "./style.css";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { imageCoordListState, isCopyState } from "../../recoil/drawing/atom";
 
 /* 그리기 모드 */
@@ -48,23 +48,25 @@ function Canvas() {
   const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
-  const isCopy = useRecoilValue(isCopyState);
+  const [isCopy, setIsCopy] = useRecoilState(isCopyState);
   const imageCoordList = useRecoilValue(imageCoordListState);
+  const [startPoint, setStartPoint] = useState(null);
 
   useEffect(() => {
-    if (isCopy) {
-      // ai 드로잉 사용자 캔버스로 가져오기
+    if (isCopy && startPoint) {
+      // ai 드로잉을 사용자 캔버스로 가져오기
       for (const [xList, yList] of imageCoordList) {
         const newPath = new Path2D();
 
         for (let i = 0; i < xList.length; i++) {
-          newPath.lineTo(xList[i] + 100, yList[i] + 100); // 선 연결
+          newPath.lineTo(xList[i] + startPoint.x, yList[i] + startPoint.y); // 선 연결
           ctx.stroke(newPath); // 선 그리기
         }
         setPathList((current) => [...current, newPath]);
       }
+      setIsCopy(false);
     }
-  }, [isCopy]);
+  }, [startPoint]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -145,15 +147,27 @@ function Canvas() {
     }
   };
 
+  const onClickCanvas = (event) => {
+    const { offsetX, offsetY } = event.nativeEvent;
+
+    // 사용자가 캔버스 그림을 가져오려고 하면
+    if (isCopy) {
+      // 시작점 저장하기
+      setStartPoint({ x: offsetX, y: offsetY });
+    } else {
+      // 아니면 채우기
+      paint(offsetX, offsetY);
+    }
+  };
+
   /* 채우기 */
-  const paint = (event) => {
+  const paint = (x, y) => {
     if (action === Action.Paint) {
-      const { offsetX, offsetY } = event.nativeEvent;
       let isBackground = true;
 
       // 클릭한 path 찾기
       for (const p of pathList) {
-        const isPointInPath = ctx.isPointInPath(p, offsetX, offsetY);
+        const isPointInPath = ctx.isPointInPath(p, x, y);
         if (isPointInPath) {
           // 해당 path 내부 채우기
           ctx.fill(p);
@@ -264,7 +278,7 @@ function Canvas() {
           onMouseUp={stopDrawing}
           onMouseMove={draw}
           onMouseLeave={stopDrawing}
-          onClick={paint}
+          onClick={onClickCanvas}
         ></canvas>
       </div>
     </div>

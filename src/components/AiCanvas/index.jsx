@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
@@ -22,7 +22,7 @@ function AiCanvas() {
   const [pathList, setPathList] = useState([]);
   const [drawingName, setDrawingName] = useState("");
   const setImageCoordList = useSetRecoilState(imageCoordListState);
-  const setIsCopy = useSetRecoilState(isCopyState);
+  const [isCopy, setIsCopy] = useRecoilState(isCopyState);
 
   useEffect(() => {
     /* 캔버스 기본 설정 */
@@ -98,6 +98,25 @@ function AiCanvas() {
     }
   };
 
+  const getMessaage = () => {
+    if (isCopy) {
+      return (
+        <div className="chat__text">
+          <span>캔버스에서 그림을 놓을 위치를 클릭해주세요.</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="chat__text">
+        <span>우리 이야기에 어울리는 그림을 그려보자.</span>
+        {drawingName !== "" && (
+          <span>나는 "{drawingName}"을/를 그려봤어. 어때?</span>
+        )}
+      </div>
+    );
+  };
+
   const onClick = () => {
     // 사용자 캔버스로 그림 가져오기
     setIsCopy(true);
@@ -107,12 +126,7 @@ function AiCanvas() {
     <div className="AiCanvas">
       <div className="AiCanvas__chat">
         <img src={talkingProfile} alt="토킹 프로필 사진" />
-        <div className="chat__text">
-          <span>우리 이야기에 어울리는 그림을 그려보자.</span>
-          {drawingName !== "" && (
-            <span>나는 "{drawingName}"을/를 그려봤어. 어때?</span>
-          )}
-        </div>
+        {getMessaage()}
       </div>
       <div className="AiCanvas__canvas" ref={parentOfCanvasRef}>
         <canvas className="canvas__drawing" ref={canvasRef} />
