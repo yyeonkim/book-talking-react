@@ -6,10 +6,14 @@ import talkingProfile from "../../assets/talking_profile.png";
 import { getKeywordList, translateKeyword } from "../../api/chatAPI";
 import { getImageByKeyword } from "../../api/quickdrawAPI";
 
+const baseMessage =
+  "위 이야기에서 다섯 개의 키워드를 영어로 알려줘. 부연 설명 하지 말고, 아래처럼 배열 형태로 알려줘.\nanswer: [word1, word2, word3, word4, word5]";
+const retryMessage = `다른 단어로 알려줘. ${baseMessage}`;
+
 function AiCanvas() {
-  //      const {
-  //     state: { story, title },
-  //   } = useLocation();
+  const {
+    state: { story, title },
+  } = useLocation();
 
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null);
@@ -34,31 +38,39 @@ function AiCanvas() {
     ctx.strokeStyle = "#000";
 
     (async () => {
-      let keywordList = [];
-      let aiDrawing = [];
-      let keyword = "";
+      let chatList = [
+        {
+          role: "user",
+          content: `${story}\n\n${baseMessage}`,
+        },
+      ];
+      let imageRes;
 
       while (true) {
-        keywordList = await getKeywordList({
-          story:
-            "영희는 최근에 '이상한 나라의 앨리스'를 읽고, 이상한 나라로 여행을 가고 싶어졌어요. 그녀는 체셔 고양이를 만나기 위해 여행을 하게 되었고, 준비물로는 체셔 고양이가 좋아하는 마들렌 케이크를 가져갔어요. 이제 영희와 체셔 고양이의 모험이 시작됐습니다! 체셔 고양이와 함께 이동하면서, 영희는 토끼도 만나기로 했어요. 그녀는 토끼를 쫓으며 무슨 일이 일어날까 기대하기도 하지만 길을 잃거나 무서워하기도 해요. 하지만 언제든지 엄마나 아빠에게 도움을 받으며 안전하게 여행할 수 있다면, 영희와 체셔 고양시의 모험은 계속 됩니다!",
-        });
-        const res = await getImageByKeyword(keywordList);
+        const res = await getKeywordList(chatList);
+        console.log(chatList);
+        const keywordList = stringToArray(res.data.content); // 문자를 배열로 바꾸기
+        imageRes = await getImageByKeyword(keywordList);
 
-        if (res.message === "fail") {
-          // 키워드 다시 받아오기
+        // 관련 그림이 있을 때까지 키워드 계속 추출
+        if (imageRes.message === "fail") {
+          chatList.push(res.data, {
+            role: "user",
+            content: retryMessage,
+          });
           continue;
         }
-        aiDrawing = res.data._drawing_data.image;
-        keyword = res.data._name;
         break;
       }
 
+      const coordinates = imageRes.data._drawing_data.image; // 그림 드로잉 좌표
+      const keyword = imageRes.data._name; // 그림의 키워드
+      // 영어 단어를 한글로 가져오기
       const res = await translateKeyword(keyword);
       setDrawingName(res.data.content);
 
       // 좌표로 그림 그리기
-      for (const [xList, yList] of aiDrawing) {
+      for (const [xList, yList] of coordinates) {
         const aiPath = new Path2D();
         for (let i = 0; i < xList.length; i++) {
           aiPath.lineTo(xList[i] + startPoint[0], yList[i] + startPoint[1]); // 선 연결
@@ -67,7 +79,15 @@ function AiCanvas() {
         setPathList((current) => [...current, aiPath]);
       }
     })();
-  }, []);
+  }, [story]);
+
+  /* 배열 형태의 문자를 실제 배열로 변환 */
+  const stringToArray = (str) => {
+    return str
+      .slice(9, -1)
+      .split(",")
+      .map((keyword) => keyword.trim());
+  };
 
   return (
     <div className="AiCanvas">
@@ -80,23 +100,17 @@ function AiCanvas() {
         </span>
       </div>
       <div className="AiCanvas__canvas" ref={parentOfCanvasRef}>
-        <canvas className="canvas__drawing" ref={canvasRef}></canvas>
+        <canvas className="canvas__drawing" ref={canvasRef} />
         {pathList.length === 0 ? (
           <div className="canvas__loader">. . .</div>
         ) : (
           <button className="canvas__copyButton">가져오기</button>
         )}
       </div>
-      <p className="AiCanvas__story">
-        영희는 최근에 '이상한 나라의 앨리스'를 읽고, 이상한 나라로 여행을 가고
-        싶어졌어요. 그녀는 체셔 고양이를 만나기 위해 여행을 하게 되었고,
-        준비물로는 체셔 고양이가 좋아하는 마들렌 케이크를 가져갔어요. 이제
-        영희와 체셔 고양이의 모험이 시작됐습니다! 체셔 고양이와 함께 이동하면서,
-        영희는 토끼도 만나기로 했어요. 그녀는 토끼를 쫓으며 무슨 일이 일어날까
-        기대하기도 하지만 길을 잃거나 무서워하기도 해요. 하지만 언제든지 엄마나
-        아빠에게 도움을 받으며 안전하게 여행할 수 있다면, 영희와 체셔 고양시의
-        모험은 계속 됩니다!
-      </p>
+      <div className="AiCanvas__story">
+        <h3>{`제목: ${title}`}</h3>
+        <p>{story}</p>
+      </div>
     </div>
   );
 }

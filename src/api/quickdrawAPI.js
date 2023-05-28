@@ -10,12 +10,9 @@ export const getImageByKeyword = async (keywordList) => {
     );
     if (response.status === 200) {
       return { message: "success", data: response.data };
-    } else if (response.status === 404) {
-      return { message: "fail" };
-    } else {
-      throw Error();
     }
+    throw Error();
   } catch (error) {
-    console.error(error);
+    return { message: "fail" };
   }
 };

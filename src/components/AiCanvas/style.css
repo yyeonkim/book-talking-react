@@ -20,12 +20,21 @@
 .AiCanvas__story {
   overflow-y: auto;
   height: 50%;
-  font-size: 2rem;
   padding: 2rem;
-  text-align: justify;
-  line-height: 1.5;
+
   background-color: var(--grey);
   border-radius: 0 0 1.6rem 1.6rem;
+}
+
+.AiCanvas__story h3 {
+  font-size: 2.4rem;
+  margin-bottom: 1.6rem;
+}
+
+.AiCanvas__story p {
+  font-size: 2rem;
+  text-align: justify;
+  line-height: 1.5;
 }
 
 .AiCanvas__canvas {
