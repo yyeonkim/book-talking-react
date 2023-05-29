@@ -14,6 +14,7 @@ import LoadingPage from "./pages/LoadingPage";
 import StoryPage from "./pages/StoryPage";
 import DrawingPage from "./pages/DrawingPage";
 import { RecoilRoot } from "recoil";
+import CompletePage from "./pages/CompletePage";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/drawing",
         element: <DrawingPage />,
+      },
+      {
+        path: "/complete",
+        element: <CompletePage />,
       },
     ],
   },
