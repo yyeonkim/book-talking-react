@@ -1,5 +1,6 @@
 header {
   padding: 2.4rem;
+  padding-top: calc(2.4rem + env(safe-area-inset-top));
 }
 
 .Header__intro {

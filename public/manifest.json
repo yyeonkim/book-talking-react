@@ -1,6 +1,6 @@
 {
-  "short_name": "TalkingAI",
-  "name": "Book Talking AI",
+  "short_name": "북토킹",
+  "name": "북토킹 - AI 책친구",
   "icons": [
     {
       "src": "favicon16.png",
@@ -26,5 +26,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#FEFBF3"
+  "background_color": "#FEFBF3",
+  "orientation": "landscape"
 }
