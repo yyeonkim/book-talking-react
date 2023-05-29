@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
 import "./styles/reset.css";
 import "./styles/index.css";
@@ -13,7 +14,6 @@ import Layout from "./components/Layout";
 import LoadingPage from "./pages/LoadingPage";
 import StoryPage from "./pages/StoryPage";
 import DrawingPage from "./pages/DrawingPage";
-import { RecoilRoot } from "recoil";
 import CompletePage from "./pages/CompletePage";
 
 const router = createBrowserRouter([
