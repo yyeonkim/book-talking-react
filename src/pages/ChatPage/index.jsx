@@ -13,7 +13,7 @@ export default function ChatPage() {
   const [chatList, setChatList] = useState([]);
   const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
   const scrollRef = useRef(null);
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 채팅 시작
@@ -58,7 +58,7 @@ export default function ChatPage() {
 
         // 8번 질문 받으면 로딩 화면으로 이동
         if (chatList.length >= 16) {
-          naviagte("/loading", { state: [...chatList, res.data] });
+          navigate("/loading", { state: [...chatList, res.data] });
         }
       });
     }

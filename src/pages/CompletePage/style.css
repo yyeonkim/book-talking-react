@@ -1,0 +1,75 @@
+.CompletePage {
+  padding-top: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.CompletePage h1 {
+  font-size: 3.2rem;
+  margin-bottom: 1.6rem;
+}
+
+.CompletePage p {
+  font-size: 2rem;
+  line-height: 1.5;
+}
+
+.CompletePage__story {
+  width: 50rem;
+  height: 30rem;
+  background-color: #ffe8b1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem 0;
+}
+
+.story__background {
+  background-color: white;
+  width: 48rem;
+  height: 28rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.story__text {
+  width: 45%;
+}
+
+.story__text h1 {
+  font-size: 1.6rem;
+}
+
+.story__text p {
+  font-size: 1rem;
+  text-align: justify;
+}
+
+.story__image {
+  width: 40%;
+}
+
+.CompletePage__buttonSection {
+  display: flex;
+  gap: 2rem;
+}
+
+.CompletePage__button {
+  font-size: 2.4rem;
+  width: 30rem;
+  padding: 1.6rem 0;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.CompletePage__button--yellow {
+  background-color: var(--yellow);
+}
+
+.CompletePage__button--grey {
+  background-color: var(--grey);
+}

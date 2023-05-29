@@ -4,6 +4,7 @@ import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
 import "./style.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { imageCoordListState, isCopyState } from "../../recoil/drawing/atom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 /* 그리기 모드 */
 const Action = {
@@ -38,6 +39,11 @@ const colorPaletteList = [
 ];
 
 function Canvas() {
+  const {
+    state: { story, title },
+  } = useLocation();
+  const navigate = useNavigate();
+
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
   const [canvas, setCanvas] = useState(null);
@@ -246,7 +252,10 @@ function Canvas() {
   };
 
   const onClickComplete = (event) => {
-    // 그림 완성 의사 묻기
+    // 캔버스를 이미지로 전환
+    const drawingImage = canvas.toDataURL("image/png");
+    // completePage에 이미지와 스토리 전달
+    navigate("/complete", { state: { story, title, image: drawingImage } });
   };
 
   return (
