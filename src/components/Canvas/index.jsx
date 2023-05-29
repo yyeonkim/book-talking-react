@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { RiPencilFill, RiPaintFill, RiCheckFill } from "react-icons/ri";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import html2canvas from "html2canvas";
 
 import "./style.css";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { imageCoordListState, isCopyState } from "../../recoil/drawing/atom";
-import { useLocation, useNavigate } from "react-router-dom";
 
 /* 그리기 모드 */
 const Action = {
@@ -251,11 +252,13 @@ function Canvas() {
     setBackgroundColor("#fff");
   };
 
-  const onClickComplete = (event) => {
+  const onClickComplete = () => {
     // 캔버스를 이미지로 전환
-    const drawingImage = canvas.toDataURL("image/png");
-    // completePage에 이미지와 스토리 전달
-    navigate("/complete", { state: { story, title, image: drawingImage } });
+    html2canvas(parentOfCanvasRef.current).then((canvas) => {
+      const drawingImage = canvas.toDataURL("image/png");
+      // completePage에 이미지와 스토리 전달
+      navigate("/complete", { state: { story, title, image: drawingImage } });
+    });
   };
 
   return (
