@@ -134,9 +134,7 @@ function AiCanvas() {
       </div>
       <div className="AiCanvas__canvas" ref={parentOfCanvasRef}>
         <canvas className="canvas__drawing" ref={canvasRef} />
-        {pathList.length === 0 ? (
-          <div className="canvas__loader">. . .</div>
-        ) : (
+        {pathList.length !== 0 && (
           <button className="canvas__copyButton" onClick={onClick}>
             가져오기
           </button>
