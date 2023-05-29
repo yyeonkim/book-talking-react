@@ -9,7 +9,7 @@ import { getImageByKeyword } from "../../api/quickdrawAPI";
 import { imageCoordListState, isCopyState } from "../../recoil/drawing/atom";
 
 const baseMessage =
-  "위 이야기에서 다섯 개의 키워드를 영어로 알려줘. 부연 설명 하지 말고, 아래처럼 배열 형태로 알려줘.\nanswer: [word1, word2, word3, word4, word5]";
+  "위 이야기에서 다섯 개의 사물 키워드를 영어로 알려줘. 부연 설명 하지 말고, 아래처럼 배열 형태로 알려줘.\nanswer: [word1, word2, word3, word4, word5]";
 const retryMessage = `다른 단어로 알려줘. ${baseMessage}`;
 
 function AiCanvas() {
@@ -47,9 +47,10 @@ function AiCanvas() {
         },
       ];
       let imageRes;
+      let success = false;
 
-      // 관련 그림이 있을 때까지 키워드 계속 추출
-      while (true) {
+      // 관련 그림이 있을 때까지 키워드 계속 추출 (최대 10번)
+      for (let i = 0; i < 10; i++) {
         const res = await getKeywordList(chatList);
         const keywordList = stringToArray(res.data.content); // 문자를 배열로 바꾸기
         imageRes = await getImageByKeyword(keywordList);
@@ -62,17 +63,20 @@ function AiCanvas() {
           });
           continue;
         }
+        success = true;
         break;
       }
 
-      const coordinates = imageRes.data._drawing_data.image; // 그림 드로잉 좌표
-      const keyword = imageRes.data._name; // 그림의 키워드
-      // 영어 단어를 한글로 가져오기
-      const res = await translateKeyword(keyword);
-      setDrawingName(res.data.content);
-      // 이미지 좌표로 그림 그리기
-      drawOnAiCanvas({ coordinates, startPoint, ctx });
-      setImageCoordList(coordinates);
+      if (success) {
+        const coordinates = imageRes.data._drawing_data.image; // 그림 드로잉 좌표
+        const keyword = imageRes.data._name; // 그림의 키워드
+        // 영어 단어를 한글로 가져오기
+        const res = await translateKeyword(keyword);
+        setDrawingName(res.data.content);
+        // 이미지 좌표로 그림 그리기
+        drawOnAiCanvas({ coordinates, startPoint, ctx });
+        setImageCoordList(coordinates);
+      }
     })();
   }, []);
 
