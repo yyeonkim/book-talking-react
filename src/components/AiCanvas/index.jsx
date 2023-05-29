@@ -101,14 +101,14 @@ function AiCanvas() {
   const getMessaage = () => {
     if (isCopy) {
       return (
-        <div className="chat__text">
+        <div className="message__text">
           <span>캔버스에서 그림을 놓을 위치를 클릭해주세요.</span>
         </div>
       );
     }
 
     return (
-      <div className="chat__text">
+      <div className="message__text">
         <span>우리 이야기에 어울리는 그림을 그려보자.</span>
         {drawingName !== "" && (
           <span>나는 "{drawingName}"을/를 그려봤어. 어때?</span>
@@ -124,7 +124,7 @@ function AiCanvas() {
 
   return (
     <div className="AiCanvas">
-      <div className="AiCanvas__chat">
+      <div className="AiCanvas__message">
         <img src={talkingProfile} alt="토킹 프로필 사진" />
         {getMessaage()}
       </div>

@@ -4,24 +4,24 @@
   width: 40%;
 }
 
-.AiCanvas__chat {
+.AiCanvas__message {
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.AiCanvas__chat img {
+.AiCanvas__message img {
   width: 4.8rem;
   height: 4.8rem;
   margin-right: 1.6rem;
 }
 
-.chat__text {
+.message__text {
   display: flex;
   flex-direction: column;
 }
 
-.chat__text span {
+.message__text span {
   font-size: 2rem;
 }
 
