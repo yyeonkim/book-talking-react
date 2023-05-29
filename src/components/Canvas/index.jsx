@@ -21,7 +21,7 @@ const ColorPalette = {
   Blue: "#3d4bc9",
   Pupple: "#a43fe1",
   Pink: "#ef78a3",
-  Grey: "#818181",
+  White: "#ffffff",
 };
 
 const colorPaletteList = [
@@ -34,7 +34,7 @@ const colorPaletteList = [
   ColorPalette.Blue,
   ColorPalette.Pupple,
   ColorPalette.Pink,
-  ColorPalette.Grey,
+  ColorPalette.White,
 ];
 
 function Canvas() {
@@ -46,7 +46,7 @@ function Canvas() {
   const [pathList, setPathList] = useState([]); // 사용자가 그린 path 배열
   const [backgroundColor, setBackgroundColor] = useState("#ffffff"); // 캔버스 배경 색상
   const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
-  const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, eraser, paint)
+  const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
 
   const [isCopy, setIsCopy] = useRecoilState(isCopyState); // '가져오기'를 클릭하면 true가 되면서 그림을 가져올 수 있음
@@ -182,7 +182,7 @@ function Canvas() {
         const isPointInPath = ctx.isPointInPath(p, x, y);
         if (isPointInPath) {
           // 해당 path 내부 채우기
-          ctx.fill(p);
+          ctx.fill(p, "evenodd");
           isBackground = false;
           break;
         }
@@ -265,10 +265,15 @@ function Canvas() {
             <div
               key={item}
               className="colorPalette__color"
-              style={{ backgroundColor: item }}
+              style={{
+                backgroundColor: item,
+                border: item === "#ffffff" ? "1px solid black" : "none",
+              }}
               onClick={onClickPalette}
             >
-              {item === selectedColor && <RiCheckFill color="white" />}
+              {item === selectedColor && (
+                <RiCheckFill color={item === "#ffffff" ? "black" : "white"} />
+              )}
             </div>
           ))}
         </div>
