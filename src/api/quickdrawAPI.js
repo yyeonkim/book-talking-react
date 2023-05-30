@@ -3,7 +3,7 @@ import axios from "axios";
 export const getImageByKeyword = async (keywordList) => {
   try {
     const response = await axios.post(
-      "http://44.216.2.85:80/api/keyword-image",
+      "http://18.212.101.233:80/api/keyword-image",
       {
         keywords: keywordList,
       }
