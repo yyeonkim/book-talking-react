@@ -31,10 +31,12 @@ input {
 
 @font-face {
   font-family: "OmyuPretty";
-  src: local("OmyuPretty"), url(../fonts/오뮤_다예쁨체.TTF) format("truetype");
+  src: local("OmyuPretty"), url(../fonts/오뮤_다예쁨체.woff2) format("woff2"),
+    local("OmyuPretty"), url(../fonts/오뮤_다예쁨체.TTF) format("truetype");
 }
 
 @font-face {
   font-family: "KCCGanpan";
-  src: local("KCCGanpan"), url(../fonts/KCC-GANPAN.OTF) format("opentype");
+  src: local("KCCGanpan"), url(../fonts/KCC-GANPAN.woff2) format("woff2"),
+    local("KCCGanpan"), url(../fonts/KCC-GANPAN.OTF) format("opentype");
 }
