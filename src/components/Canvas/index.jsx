@@ -303,13 +303,10 @@ function Canvas() {
           style={{ backgroundColor }}
           className="canvas__content"
           ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={stopDrawing}
-          onTouchStart={startDrawing}
-          onTouchEnd={stopDrawing}
-          onTouchMove={draw}
-          onMouseLeave={stopDrawing}
+          onPointerDown={startDrawing}
+          onPointerUp={stopDrawing}
+          onPointerMove={draw}
+          onPointerLeave={stopDrawing}
           onClick={onClickCanvas}
         ></canvas>
       </div>
