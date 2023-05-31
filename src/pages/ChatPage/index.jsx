@@ -45,7 +45,7 @@ export default function ChatPage() {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    if (userAnswer !== "") {
+    if (userAnswer.trim() !== "") {
       const newChat = { role: "user", content: userAnswer };
 
       setDisable(true);
