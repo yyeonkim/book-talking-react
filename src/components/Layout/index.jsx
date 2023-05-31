@@ -12,17 +12,20 @@ export default function Layout() {
   useEffect(() => {
     if (location.pathname === "/chat" || location.pathname === "/drawing") {
       setBgColor("#fff");
-    }
-
-    if (location.pathname === "/") {
+    } else {
       setBgColor(colorTheme.backgroundColor);
     }
   }, [location]);
 
   return (
-    <div id="Layout" style={{ backgroundColor: bgColor }}>
-      <Header />
-      <Outlet />
-    </div>
+    <>
+      <div className="Layout__message">
+        토킹이는 가로 모드에서만 등장합니다🙂
+      </div>
+      <div id="Layout" style={{ backgroundColor: bgColor }}>
+        <Header />
+        <Outlet />
+      </div>
+    </>
   );
 }

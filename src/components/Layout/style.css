@@ -1,3 +1,22 @@
 #Layout {
   min-height: 100vh;
 }
+
+.Layout__message {
+  position: absolute;
+  font-size: 2rem;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
+}
+
+@media (orientation: landscape) {
+  .Layout__message {
+    display: none;
+  }
+}
