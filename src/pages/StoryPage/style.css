@@ -21,10 +21,11 @@
 }
 
 .StoryPage__title .title__text .title__input {
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid var(--grey);
   width: 48rem;
   height: 4rem;
   font-size: 3.2rem;
+  background-color: transparent;
 }
 
 .StoryPage__title .title__text .title__input::placeholder {
