@@ -3,6 +3,8 @@ import html2canvas from "html2canvas";
 import { useRef } from "react";
 
 import "./style.css";
+import { useRecoilValue } from "recoil";
+import { usernameState } from "../../recoil/drawing/atom";
 
 function CompletePage() {
   const {
@@ -10,6 +12,7 @@ function CompletePage() {
   } = useLocation();
   const navigate = useNavigate();
   const canvasRef = useRef(null);
+  const username = useRecoilValue(usernameState);
 
   const downloadImage = () => {
     const target = canvasRef.current;
@@ -35,7 +38,7 @@ function CompletePage() {
 
   return (
     <div className="CompletePage">
-      <h1>연이의 동화가 완성됐어요</h1>
+      <h1>{username}의 동화가 완성됐어요</h1>
       <p>
         ‘동화 저장하기’를 눌러 완성된 동화를 이미지로 다운받으세요. <br /> 다른
         동화도 만들고 싶으면 ‘다른 동화 만들기’를 클릭해주세요.

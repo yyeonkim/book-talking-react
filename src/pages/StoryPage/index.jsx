@@ -37,7 +37,7 @@ export default function StoryPage() {
             onChange={(event) => setTitle(event.target.value)}
             className="title__input"
             type="text"
-            placeholder="이야기에 어울리는 제목을 지어줄래?"
+            placeholder="이야기에 어울리는 제목을 지어주세요"
           />
         </div>
       </div>

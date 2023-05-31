@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
 import "./style.css";
 import talkingProfile from "../../assets/talking_profile.png";
 import { colorTheme } from "../../theme";
 import { sendMessage, startChat } from "../../api/chatAPI";
+import { usernameState } from "../../recoil/drawing/atom";
 
 export default function ChatPage() {
   // 사용자 답변
   const [userAnswer, setUserAnswer] = useState("");
   const [chatList, setChatList] = useState([]);
   const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
+  const username = useRecoilValue(usernameState); // 사용자 이름
   const scrollRef = useRef(null);
   const navigate = useNavigate();
 
@@ -20,8 +23,7 @@ export default function ChatPage() {
     // gpt 시스템 메시지
     const systemMessage = {
       role: "system",
-      content:
-        "You are a Korean elementary student. Your task is to talk about a story with elementary students. Your main objective is to generate story questions of the story an user read to help the user to cultivate imagination. If the user answers your question, you also answer simply and then generate next question. Generate one question at a time and say in Korean, not English. For your first assignment, you are tasked with saying hello to 연이, asking her what book she read recently.",
+      content: `You are a Korean elementary student. Your task is to talk about a story with elementary students. Your main objective is to generate story questions of the story an user read to help the user to cultivate imagination. If the user answers your question, you also answer simply and then generate next question. Generate one question at a time and say in Korean, not English. For your first assignment, you are tasked with saying hello to ${username}, asking her what book she read recently.`,
     };
     startChat(systemMessage).then((res) => {
       setChatList([systemMessage, res.data]);
