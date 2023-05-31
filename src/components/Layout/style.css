@@ -15,8 +15,19 @@
   background-color: var(--background-color);
 }
 
+.Layout__message p {
+  text-align: center;
+  line-height: 1.5;
+}
+
 @media (orientation: landscape) {
-  .Layout__message {
+  .Layout__message--orientation {
+    display: none;
+  }
+}
+
+@media (min-width: 1000px) {
+  .Layout__message--screen {
     display: none;
   }
 }
