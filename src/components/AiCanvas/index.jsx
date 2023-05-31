@@ -114,9 +114,9 @@ function AiCanvas() {
 
     return (
       <div className="message__text">
-        <span>우리 이야기에 어울리는 그림을 그려보자.</span>
+        <span>우리 이야기에 어울리는 그림을 그려봐요.</span>
         {drawingName !== "" && (
-          <span>나는 "{drawingName}"을/를 그려봤어. 어때?</span>
+          <span>저는 "{drawingName}"을/를 그렸어요. 어때요?</span>
         )}
       </div>
     );

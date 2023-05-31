@@ -22,9 +22,9 @@ export default function LoadingPage() {
     <div className="LoadingPage center">
       <img className="LoadingPage__image" src={logoImage} alt="토킹이 로고" />
       <p className="LoadingPage__title">
-        즐거운 대화였어!
+        즐거운 대화였어요!
         <br />
-        이야기를 만들고 있으니 잠시만 기다려줘.
+        이야기를 만들고 있으니 잠시만 기다려주세요.
       </p>
       <Loader />
     </div>

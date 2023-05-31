@@ -31,7 +31,7 @@ export default function StoryPage() {
       <div className="StoryPage__title">
         <img className="title__img" src="logo_no_text.png" alt="토킹 로고" />
         <div className="title__text">
-          <p className="title__p">이야기를 완성했어!</p>
+          <p className="title__p">이야기를 완성했어요!</p>
           <input
             value={title}
             onChange={(event) => setTitle(event.target.value)}
