@@ -17,12 +17,15 @@ function CompletePage() {
     target.style.transform = "scale(2)";
     // 이미지로 다운로드
     html2canvas(target).then((canvas) => {
-      const a = document.createElement("a");
-      a.href = canvas.toDataURL("image/png");
-      a.download = `booktalking_${Date.now()}`;
-      a.click();
-      // 크기 다시 줄이기
-      target.style.transform = "scale(1)";
+      // blob으로 변환 (모바일 웹에서 다운받으려면 blob 또는 URI)
+      canvas.toBlob((blob) => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `booktalking_${Date.now()}`;
+        a.click();
+        // 크기 다시 줄이기
+        target.style.transform = "scale(1)";
+      });
     });
   };
 
