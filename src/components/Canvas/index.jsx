@@ -61,6 +61,20 @@ function Canvas() {
   const [startPoint, setStartPoint] = useState(null); // ai 그림을 복사할 시작점
 
   useEffect(() => {
+    const preventPageRefresh = (event) => {
+      event.preventDefault();
+    };
+
+    canvas.addEventListener("touchmove", preventPageRefresh, {
+      passive: false,
+    });
+
+    return () => {
+      canvas.removeEventListener("touchmove", preventPageRefresh);
+    };
+  }, [canvas]);
+
+  useEffect(() => {
     // '가져오기'를 누르고, 시작점을 지정했으면
     if (isCopy && startPoint) {
       // ai 그림을 사용자 캔버스로 가져오기
