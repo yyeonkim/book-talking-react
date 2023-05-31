@@ -324,6 +324,7 @@ function Canvas() {
           onPointerMove={draw}
           onPointerLeave={stopDrawing}
           onClick={onClickCanvas}
+          onTouchStart={onClickCanvas}
         ></canvas>
       </div>
     </div>
