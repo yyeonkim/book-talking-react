@@ -30,7 +30,7 @@ function AiCanvas() {
     const ctx = canvasRef.current.getContext("2d");
     const parentWidth = parentOfCanvasRef.current.offsetWidth;
     const parentHeight = parentOfCanvasRef.current.offsetHeight;
-    const startPoint = [parentWidth / 4, parentHeight / 4];
+    const startPoint = [parentWidth / 5, parentHeight / 5];
     // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
     canvas.width = parentWidth;
     canvas.height = parentHeight;
