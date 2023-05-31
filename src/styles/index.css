@@ -25,7 +25,8 @@ button {
   cursor: pointer;
 }
 
-input {
+input,
+textarea {
   font-family: "OmyuPretty", sans-serif;
 }
 

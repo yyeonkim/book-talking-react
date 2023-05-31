@@ -1,5 +1,5 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 import "./style.css";
 import YellowButton from "../../components/YellowButton";
@@ -9,7 +9,8 @@ export default function StoryPage() {
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
   const [title, setTitle] = useState("");
-
+  // const [editedStory, setEditedStory] = useState(story);
+  const storyRef = useRef(null);
   // 제목이 입력되면 버튼 활성화
   useEffect(() => {
     if (title.length === 0) {
@@ -21,7 +22,8 @@ export default function StoryPage() {
 
   const onClick = () => {
     // 완성된 동화를 다음 화면에 전달
-    navigate("/drawing", { state: { title, story } });
+    const editedStory = storyRef.current.textContent;
+    navigate("/drawing", { state: { title, story: editedStory } });
   };
 
   return (
@@ -39,7 +41,14 @@ export default function StoryPage() {
           />
         </div>
       </div>
-      <p className="StoryPage__story">{story}</p>
+      <p
+        className="StoryPage__story"
+        ref={storyRef}
+        contentEditable
+        suppressContentEditableWarning
+      >
+        {story}
+      </p>
       <YellowButton
         onClick={onClick}
         disabled={disabled}
