@@ -304,8 +304,11 @@ function Canvas() {
           className="canvas__content"
           ref={canvasRef}
           onMouseDown={startDrawing}
-          onMouseUp={stopDrawing}
           onMouseMove={draw}
+          onMouseUp={stopDrawing}
+          onTouchStart={startDrawing}
+          onTouchEnd={stopDrawing}
+          onTouchMove={draw}
           onMouseLeave={stopDrawing}
           onClick={onClickCanvas}
         ></canvas>
