@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./style.css";
 import Loader from "../../components/Loader";
 import { summarizeChat } from "../../api/chatAPI";
+import logoImage from "../../assets/logo_no_text.png";
 
 export default function LoadingPage() {
   const { state: chatList } = useLocation();
@@ -19,11 +20,7 @@ export default function LoadingPage() {
 
   return (
     <div className="LoadingPage center">
-      <img
-        className="LoadingPage__image"
-        src="logo_no_text.png"
-        alt="토킹이 로고"
-      />
+      <img className="LoadingPage__image" src={logoImage} alt="토킹이 로고" />
       <p className="LoadingPage__title">
         즐거운 대화였어!
         <br />
