@@ -4,33 +4,3 @@
   gap: 2rem;
   height: 85vh;
 }
-
-.DrawingPage__left {
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-}
-
-.left__ai {
-  display: flex;
-  align-items: center;
-  font-size: 2.4rem;
-  margin-bottom: 2rem;
-}
-
-.left__ai img {
-  width: 4.8rem;
-  height: 4.8rem;
-  margin-right: 1.6rem;
-}
-
-.left__story {
-  overflow-y: auto;
-  height: 50%;
-  font-size: 2rem;
-  padding: 2rem;
-  text-align: justify;
-  line-height: 1.5;
-  background-color: var(--grey);
-  border-radius: 0 0 1.6rem 1.6rem;
-}
