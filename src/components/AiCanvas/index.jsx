@@ -30,7 +30,7 @@ function AiCanvas() {
     const ctx = canvasRef.current.getContext("2d");
     const parentWidth = parentOfCanvasRef.current.offsetWidth;
     const parentHeight = parentOfCanvasRef.current.offsetHeight;
-    const startPoint = [parentWidth / 5, parentHeight / 5];
+    const startPoint = [parentWidth / 6, parentHeight / 6];
     // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
     canvas.width = parentWidth;
     canvas.height = parentHeight;
@@ -91,11 +91,12 @@ function AiCanvas() {
   /* 시작점부터 좌표에 따라 그림 표시하기 */
   const drawOnAiCanvas = ({ coordinates, startPoint, ctx }) => {
     const [startX, startY] = startPoint;
+    const scale = 0.8;
     for (const [xList, yList] of coordinates) {
       const aiPath = new Path2D();
 
       for (let i = 0; i < xList.length; i++) {
-        aiPath.lineTo(xList[i] + startX, yList[i] + startY); // 선 연결
+        aiPath.lineTo(xList[i] * scale + startX, yList[i] * scale + startY); // 선 연결
         ctx.stroke(aiPath); // 선 그리기
       }
       setPathList((current) => [...current, aiPath]);
@@ -122,7 +123,6 @@ function AiCanvas() {
   };
 
   const onClick = () => {
-    // 사용자 캔버스로 그림 가져오기
     setIsCopy(true);
   };
 

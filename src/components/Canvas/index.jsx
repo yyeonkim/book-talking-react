@@ -97,6 +97,7 @@ function Canvas() {
     }
   };
 
+  /* 캔버스 초기화 */
   useEffect(() => {
     initCanvas();
   }, [setCanvas]);
