@@ -153,6 +153,7 @@ function Canvas() {
 
   /* 선 그리기 */
   const draw = (event) => {
+    event.preventDefault();
     const { offsetX, offsetY } = event.nativeEvent;
 
     if (drawing) {

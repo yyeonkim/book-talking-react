@@ -3,4 +3,5 @@
   padding: 0 2.4rem;
   gap: 2rem;
   height: 85vh;
+  overflow: hidden;
 }
