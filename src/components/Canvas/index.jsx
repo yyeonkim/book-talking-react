@@ -65,13 +65,15 @@ function Canvas() {
       event.preventDefault();
     };
 
-    canvas.addEventListener("touchmove", preventPageRefresh, {
-      passive: false,
-    });
+    if (canvas) {
+      canvas.addEventListener("touchmove", preventPageRefresh, {
+        passive: false,
+      });
 
-    return () => {
-      canvas.removeEventListener("touchmove", preventPageRefresh);
-    };
+      return () => {
+        canvas.removeEventListener("touchmove", preventPageRefresh);
+      };
+    }
   }, [canvas]);
 
   useEffect(() => {
