@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://44.216.2.85:5000";
+const baseUrl = "http://54.90.154.55:5000";
 
 export const startChat = async (systemMessage) => {
   return await axios.post(`${baseUrl}/api/chat/start`, systemMessage);
