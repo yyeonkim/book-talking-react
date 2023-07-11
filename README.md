@@ -9,6 +9,7 @@
 
 ### 서비스 화면
 - [전체 시연 영상 - 토킹 AI 책친구](https://youtu.be/he738vPYxwA)
+- 로고 이미지는 [미리캔버스](https://www.miricanvas.com/ko)에서 임시로 제작했습니다.
   
 <img width="90%" alt="서비스 화면 예시" src="https://github.com/yyeonkim/book-talking-react/assets/70844774/e9d67a55-3cba-4d4a-94c6-7e539573d528" />
 
