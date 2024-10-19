@@ -10,17 +10,47 @@ import { sendMessage, startChat } from "../../api/chatAPI";
 import { usernameState } from "../../recoil/drawing/atom";
 
 export default function ChatPage() {
-  // 사용자 답변
-  const [userAnswer, setUserAnswer] = useState("");
-  const [chatList, setChatList] = useState([]);
-  const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
-  const username = useRecoilValue(usernameState); // 사용자 이름
   const scrollRef = useRef(null);
   const navigate = useNavigate();
 
+  const [userAnswer, setUserAnswer] = useState(""); // 사용자 답변
+  const [chatList, setChatList] = useState([]);
+  const [disabled, setDisable] = useState(true); // 사용자 채팅 disable
+
+  const username = useRecoilValue(usernameState); // 사용자 이름
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    if (userAnswer.trim() === "") return;
+
+    const newChat = { role: "user", content: userAnswer };
+
+    setDisable(true);
+    setUserAnswer(""); // 사용자 입력 초기화
+    setChatList((current) => [...current, newChat]);
+    sendMessage([...chatList, newChat]).then((res) => {
+      // 사용자와 토킹 답변 state에 저장
+      setChatList((current) => [...current, res.data]);
+      setDisable(false);
+
+      // 8번 질문 받으면 로딩 화면으로 이동
+      if (chatList.length >= 16) {
+        navigate("/loading", { state: [...chatList, res.data] });
+      }
+    });
+  };
+
+  const scrollToBottom = () => {
+    scrollRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  };
+
   useEffect(() => {
-    // 채팅 시작
-    // gpt 시스템 메시지
+    /* 채팅 시작 */
     const systemMessage = {
       role: "system",
       content: `You are a Korean elementary student. Your task is to talk about a story with elementary students. Your main objective is to generate story questions based on the story a user read to help the user cultivate their imagination. If the user answers your question, you should respond simply and then generate the next question. Generate one question at a time and speak in Korean, not English. For your first assignment, you are tasked with saying hello to ${username} and asking her what book she has recently read.`,
@@ -35,36 +65,6 @@ export default function ChatPage() {
     // 채팅이 늘어나면 맨 아래로 스크롤 하기
     scrollToBottom();
   }, [chatList]);
-
-  const scrollToBottom = () => {
-    scrollRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
-  };
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-
-    if (userAnswer.trim() !== "") {
-      const newChat = { role: "user", content: userAnswer };
-
-      setDisable(true);
-      setUserAnswer(""); // 사용자 입력 초기화
-      setChatList((current) => [...current, newChat]);
-      sendMessage([...chatList, newChat]).then((res) => {
-        // 사용자와 토킹 답변 state에 저장
-        setChatList((current) => [...current, res.data]);
-        setDisable(false);
-
-        // 8번 질문 받으면 로딩 화면으로 이동
-        if (chatList.length >= 16) {
-          navigate("/loading", { state: [...chatList, res.data] });
-        }
-      });
-    }
-  };
 
   return (
     <>
@@ -88,13 +88,14 @@ export default function ChatPage() {
           )
         )}
       </div>
+
       <form onSubmit={onSubmit} className="ChatPage__form">
         <input
-          disabled={disabled}
-          value={userAnswer}
-          onChange={(event) => setUserAnswer(event.target.value)}
           className="ChatPage__input"
           type="text"
+          value={userAnswer}
+          disabled={disabled}
+          onChange={(event) => setUserAnswer(event.target.value)}
         />
         <button className="ChatPage__sendButton">
           <IoSend size={24} color={colorTheme.grey} />

@@ -44,9 +44,9 @@ function Canvas() {
     state: { story, title },
   } = useLocation();
   const navigate = useNavigate();
-
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null); // 캔버스 부모 요소
+
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
   const [path, setPath] = useState(new Path2D()); // 사용자가 현재 그리는 path
@@ -55,35 +55,10 @@ function Canvas() {
   const [selectedColor, setSelectedColor] = useState("#000000"); // 현재 선택한 색상
   const [action, setAction] = useState(Action.Pencil); // 그리기 액션 (pencil, paint)
   const [drawing, setDrawing] = useState(false); // 그리는 중이면 true 아니면 false
+  const [startPoint, setStartPoint] = useState(null); // ai 그림을 복사할 시작점
 
   const [isCopy, setIsCopy] = useRecoilState(isCopyState); // '가져오기'를 클릭하면 true가 되면서 그림을 가져올 수 있음
   const imageCoordList = useRecoilValue(imageCoordListState); // ai 그림의 좌표
-  const [startPoint, setStartPoint] = useState(null); // ai 그림을 복사할 시작점
-
-  useEffect(() => {
-    const preventPageRefresh = (event) => {
-      event.preventDefault();
-    };
-
-    if (canvas) {
-      canvas.addEventListener("touchmove", preventPageRefresh, {
-        passive: false,
-      });
-
-      return () => {
-        canvas.removeEventListener("touchmove", preventPageRefresh);
-      };
-    }
-  }, [canvas]);
-
-  useEffect(() => {
-    // '가져오기'를 누르고, 시작점을 지정했으면
-    if (isCopy && startPoint) {
-      // ai 그림을 사용자 캔버스로 가져오기
-      copyDrawing();
-      setIsCopy(false);
-    }
-  }, [startPoint]);
 
   const copyDrawing = () => {
     for (const [xList, yList] of imageCoordList) {
@@ -93,28 +68,9 @@ function Canvas() {
         newPath.lineTo(xList[i] + startPoint.x, yList[i] + startPoint.y); // 선 연결
         ctx.stroke(newPath); // 선 그리기
       }
+
       setPathList((current) => [...current, newPath]);
     }
-  };
-
-  /* 캔버스 초기화 */
-  useEffect(() => {
-    initCanvas();
-  }, [setCanvas]);
-
-  const initCanvas = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvasRef.current.getContext("2d");
-    // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
-    canvas.width = parentOfCanvasRef.current.offsetWidth;
-    canvas.height = parentOfCanvasRef.current.offsetHeight;
-    // context 초기 스타일 지정
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = ColorPalette.Black;
-    ctx.fillStyle = ColorPalette.Black;
-    // state 저장
-    setCtx(ctx);
-    setCanvas(canvas);
   };
 
   const onClickAction = (event) => {
@@ -125,7 +81,8 @@ function Canvas() {
     // 바로 부모 요소가 선택되면 동작 X
     if (target.tagName === "DIV") {
       return;
-    } else if (target.tagName === "svg") {
+    }
+    if (target.tagName === "svg") {
       action = target.dataset.action;
       parent = target.parentElement;
       // svg 안에 있는 path가 선택되면
@@ -249,11 +206,8 @@ function Canvas() {
     // 각 값을 16 진수 문자로 변환
     rgbInt.forEach((item) => {
       let str = item.toString(16);
-      if (str.length === 1) {
-        result += `0${str}`; // 한 자리 수는 앞에 0 붙이기
-      } else {
-        result += str;
-      }
+      if (str.length === 1) result += `0${str}`; // 한 자리 수는 앞에 0 붙이기
+      else result += str;
     });
 
     return result;
@@ -277,6 +231,51 @@ function Canvas() {
       navigate("/complete", { state: { story, title, image: drawingImage } });
     });
   };
+
+  const initCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvasRef.current.getContext("2d");
+    // 캔버스 부모 요소의 width, height를 캔버스 크기로 지정
+    canvas.width = parentOfCanvasRef.current.offsetWidth;
+    canvas.height = parentOfCanvasRef.current.offsetHeight;
+    // context 초기 스타일 지정
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = ColorPalette.Black;
+    ctx.fillStyle = ColorPalette.Black;
+    // state 저장
+    setCtx(ctx);
+    setCanvas(canvas);
+  };
+
+  useEffect(() => {
+    const preventPageRefresh = (event) => {
+      event.preventDefault();
+    };
+
+    if (canvas) {
+      canvas.addEventListener("touchmove", preventPageRefresh, {
+        passive: false,
+      });
+
+      return () => {
+        canvas.removeEventListener("touchmove", preventPageRefresh);
+      };
+    }
+  }, [canvas]);
+
+  useEffect(() => {
+    // '가져오기'를 누르고, 시작점을 지정했으면
+    if (isCopy && startPoint) {
+      // ai 그림을 사용자 캔버스로 가져오기
+      copyDrawing();
+      setIsCopy(false);
+    }
+  }, [startPoint]);
+
+  /* 캔버스 초기화 */
+  useEffect(() => {
+    initCanvas();
+  }, [setCanvas]);
 
   return (
     <div className="Canvas">

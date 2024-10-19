@@ -7,24 +7,22 @@ import YellowButton from "../../components/YellowButton";
 export default function StoryPage() {
   const { state: story } = useLocation();
   const navigate = useNavigate();
+  const storyRef = useRef(null);
+
   const [disabled, setDisabled] = useState(true);
   const [title, setTitle] = useState("");
-  // const [editedStory, setEditedStory] = useState(story);
-  const storyRef = useRef(null);
-  // 제목이 입력되면 버튼 활성화
-  useEffect(() => {
-    if (title.length === 0) {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
-  }, [title.length]);
 
   const onClick = () => {
     // 완성된 동화를 다음 화면에 전달
     const editedStory = storyRef.current.textContent;
     navigate("/drawing", { state: { title, story: editedStory } });
   };
+
+  // 제목이 입력되면 버튼 활성화
+  useEffect(() => {
+    if (title.length === 0) setDisabled(true);
+    else setDisabled(false);
+  }, [title.length]);
 
   return (
     <div className="StoryPage center">

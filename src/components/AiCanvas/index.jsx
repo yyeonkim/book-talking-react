@@ -16,13 +16,60 @@ function AiCanvas() {
   const {
     state: { story, title },
   } = useLocation();
-
   const canvasRef = useRef(null);
   const parentOfCanvasRef = useRef(null);
+
   const [pathList, setPathList] = useState([]);
   const [drawingName, setDrawingName] = useState("");
+
   const setImageCoordList = useSetRecoilState(imageCoordListState);
   const [isCopy, setIsCopy] = useRecoilState(isCopyState);
+
+  /* 배열 형태의 문자를 실제 배열로 변환 */
+  const stringToArray = (str) => {
+    return str
+      .slice(9, -1)
+      .split(",")
+      .map((keyword) => keyword.trim());
+  };
+
+  /* 시작점부터 좌표에 따라 그림 표시하기 */
+  const drawOnAiCanvas = ({ coordinates, startPoint, ctx }) => {
+    const [startX, startY] = startPoint;
+    const scale = 0.8;
+    for (const [xList, yList] of coordinates) {
+      const aiPath = new Path2D();
+
+      for (let i = 0; i < xList.length; i++) {
+        aiPath.lineTo(xList[i] * scale + startX, yList[i] * scale + startY); // 선 연결
+        ctx.stroke(aiPath); // 선 그리기
+      }
+      setPathList((current) => [...current, aiPath]);
+    }
+  };
+
+  const getMessaage = () => {
+    if (isCopy) {
+      return (
+        <div className="message__text">
+          <span>캔버스에서 그림을 놓을 위치를 클릭해주세요.</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="message__text">
+        <span>우리 이야기에 어울리는 그림을 그려봐요.</span>
+        {drawingName !== "" && (
+          <span>저는 "{drawingName}"을/를 그렸어요. 어때요?</span>
+        )}
+      </div>
+    );
+  };
+
+  const onClick = () => {
+    setIsCopy(true);
+  };
 
   useEffect(() => {
     /* 캔버스 기본 설정 */
@@ -79,52 +126,6 @@ function AiCanvas() {
       }
     })();
   }, []);
-
-  /* 배열 형태의 문자를 실제 배열로 변환 */
-  const stringToArray = (str) => {
-    return str
-      .slice(9, -1)
-      .split(",")
-      .map((keyword) => keyword.trim());
-  };
-
-  /* 시작점부터 좌표에 따라 그림 표시하기 */
-  const drawOnAiCanvas = ({ coordinates, startPoint, ctx }) => {
-    const [startX, startY] = startPoint;
-    const scale = 0.8;
-    for (const [xList, yList] of coordinates) {
-      const aiPath = new Path2D();
-
-      for (let i = 0; i < xList.length; i++) {
-        aiPath.lineTo(xList[i] * scale + startX, yList[i] * scale + startY); // 선 연결
-        ctx.stroke(aiPath); // 선 그리기
-      }
-      setPathList((current) => [...current, aiPath]);
-    }
-  };
-
-  const getMessaage = () => {
-    if (isCopy) {
-      return (
-        <div className="message__text">
-          <span>캔버스에서 그림을 놓을 위치를 클릭해주세요.</span>
-        </div>
-      );
-    }
-
-    return (
-      <div className="message__text">
-        <span>우리 이야기에 어울리는 그림을 그려봐요.</span>
-        {drawingName !== "" && (
-          <span>저는 "{drawingName}"을/를 그렸어요. 어때요?</span>
-        )}
-      </div>
-    );
-  };
-
-  const onClick = () => {
-    setIsCopy(true);
-  };
 
   return (
     <div className="AiCanvas">

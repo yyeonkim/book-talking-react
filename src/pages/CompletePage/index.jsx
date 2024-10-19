@@ -12,6 +12,7 @@ function CompletePage() {
   } = useLocation();
   const navigate = useNavigate();
   const canvasRef = useRef(null);
+
   const username = useRecoilValue(usernameState);
 
   const downloadImage = () => {
